@@ -1,0 +1,194 @@
+{% extends 'base.html' %} {% block content %}
+<main class="page blog-post" style="padding-top: 0px; height: auto">
+  <section
+    class="clean-block clean-post dark"
+    style="background: var(--bs-white); height: auto; padding-top: 0px"
+  >
+    <div class="container" style="height: auto">
+      <div style="background: rgba(255, 255, 255, 0)">
+        <div
+          class="post-body"
+          style="
+            background: rgba(248, 249, 250, 0);
+            padding-right: 20px;
+            padding-left: 20px;
+          "
+        >
+          <div class="row">
+            <div class="col">
+              <h3
+                class="text-center"
+                style="
+                  background: var(--bs-blue);
+                  padding: 5px;
+                  color: var(--bs-white);
+                "
+              >
+                Inventory
+              </h3>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>MEN</th>
+                      <th>WOMEN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Shirts : {{men_type_counts.SHIRTS}}</td>
+                      <td>Shirts : w{{women_type_counts.SHIRTS}}</td>
+                    </tr>
+                    <tr>
+                      <td>T-Shirts : {{men_type_counts.TSHIRTS}}</td>
+                      <td>T-Shirts : w{{women_type_counts.TSHIRTS}}</td>
+                    </tr>
+                    <tr>
+                      <td>Trousers : {{men_type_counts.TROUSERS}}</td>
+                      <td>Trousers : w{{women_type_counts.TROUSERS}}</td>
+                    </tr>
+                    <tr>
+                      <td>Shoes : {{men_type_counts.SHOES}}</td>
+                      <td>Shoes : w{{women_type_counts.SHOES}}</td>
+                    </tr>
+                    <tr>
+                      <td>Pants : {{men_type_counts.PANTS}}</td>
+                      <td>Pants : w{{women_type_counts.PANTS}}</td>
+                    </tr>
+                    <tr>
+                      <td>Shorts : {{men_type_counts.SHORTS}}</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col">
+              <h3
+                class="text-center"
+                style="
+                  background: var(--bs-blue);
+                  padding: 5px;
+                  color: var(--bs-white);
+                "
+              >
+                Inventory
+              </h3>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>BOYS</th>
+                      <th>GIRLS&nbsp;&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>TOTAL: {{boys_count}}</td>
+                      <td>TOTAL: {{girls_count}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col-md-6"
+              style="
+                background: rgba(255, 255, 255, 0);
+                padding-top: 14px;
+                width: 100%;
+                height: auto;
+              "
+            >
+              <div style="height: auto">
+                <div style="height: auto">
+                  <h3
+                    class="text-center"
+                    style="
+                      padding: 10px;
+                      background: var(--bs-orange);
+                      color: var(--bs-white);
+                    "
+                  >
+                    Orders({{order_count}})
+                  </h3>
+                </div>
+                {% for order in orders %}
+                <div
+                  class="d-flex"
+                  style="
+                    height: auto;
+                    margin-bottom: 10px;
+                    padding: 5px;
+                    border-width: 1px;
+                    border-style: solid;
+                  "
+                >
+                  <a
+                    href="{% url 'admin_local:order_detail' order.pk %}"
+                    style="color: black"
+                    ><p style="margin-bottom: 0px">
+                      ({{order.product_name}}),Order by
+                      ({{order.user}}),({{order.address}}),on
+                      ({{order.date}})<br /></p
+                  ></a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col-md-6"
+              style="
+                background: rgba(255, 255, 255, 0);
+                padding-top: 14px;
+                width: 100%;
+                height: auto;
+              "
+            >
+              <div style="height: auto">
+                <div style="height: auto">
+                  <h3
+                    class="text-center"
+                    style="
+                      padding: 10px;
+                      background: var(--bs-orange);
+                      color: var(--bs-white);
+                    "
+                  >
+                    Orders(Dispatched or canceled)
+                  </h3>
+                </div>
+                {% for order in orders_updated %}
+                <div
+                  class="d-flex"
+                  style="
+                    height: auto;
+                    margin-bottom: 10px;
+                    padding: 5px;
+                    border-width: 1px;
+                    border-style: solid;
+                  "
+                >
+                  <a
+                    href="{% url 'admin_local:order_detail' order.pk %}"
+                    style="color: black"
+                    ><p style="margin-bottom: 0px">
+                      ({{order.product_name}}),Order by
+                      ({{order.user}}),({{order.address}}),on
+                      ({{order.date}})<br /></p
+                  ></a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

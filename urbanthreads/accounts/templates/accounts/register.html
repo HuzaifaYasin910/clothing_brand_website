@@ -1,0 +1,68 @@
+{% extends "base.html"%} {% block content %} {% if messages %} {% for message in
+messages %}
+<div class="alert alert-info">{{ message }}</div>
+{% endfor %} {% endif %}
+<main class="page registration-page">
+  <section class="clean-block clean-form dark">
+    <div class="container">
+      <div class="block-heading">
+        <h1 style="font-weight: bold; color: rgb(0, 62, 123)">Sign up</h1>
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label" for="username">Username</label
+          ><input
+            class="form-control item"
+            type="text"
+            id="username"
+            name="username"
+            style="box-shadow: none"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="email">Email</label>
+          <input
+            class="form-control item"
+            type="email"
+            id="email"
+            name="email"
+            style="box-shadow: none"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="password">Password</label>
+          <input
+            class="form-control item"
+            type="password"
+            id="password"
+            name="password"
+            style="box-shadow: none"
+          />
+        </div>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+          style="
+            background: var(--bs-yellow);
+            border-width: 0px;
+            width: 100%;
+            box-shadow: none;
+          "
+        >
+          Sign Up
+        </button>
+        <p class="text-center" style="margin-top: 5px">
+          <br />Already have an account&nbsp;<br /><a
+            href="{% url 'accounts:login' %}"
+            style="font-weight: bold"
+            >login</a
+          ><br />
+        </p>
+      </form>
+    </div>
+  </section>
+</main>
+{% endblock %}

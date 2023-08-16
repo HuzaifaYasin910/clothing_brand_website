@@ -1,0 +1,73 @@
+{% extends "base.html"%}
+
+
+{% block content %}
+    <main class="page payment-page">
+        <section class="clean-block payment-form dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h1 style="font-family: Alatsi, sans-serif;color: rgb(0,59,118);">Payment</h1>
+                </div>
+                <form - method="post" id="form">
+                    {% csrf_token %}
+                    <div class="products">
+                        <h3 class="title">Checkout</h3>
+                        <div class="item">
+                            <span class="price">{{product.price}}$</span>
+                            <p class="item-name">{{product.name}}</p>
+                        </div>
+                        <div class="total">
+                            <span>Total</span>
+                            <span class="price"></span>
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-sm-7" style="width: 100%;">
+                                    <div class="mb-3"><label class="form-label" name="name">Full name</label>
+                                    <input type="text" name="name" class="form-control" maxlength="100" required id="id_name" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-sm-7" style="width: 100%;">
+                                <div class="mb-3"><label class="form-label" name="address">Email</label>
+                                    <input type="email" name="email" class="form-control" maxlength="254" required id="id_email" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-sm-7" style="width: 100%;">
+                                <div class="mb-3"><label class="form-label" name="address">Telephone</label>
+                                    <input type="text" name="telephone" class="form-control" maxlength="20" required id="id_telephone" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-sm-7" style="width: 100%;">
+                    <div class="mb-3"><label class="form-label" name="address">Address</label>
+                        <input type="text" name="address" class="form-control" maxlength="100" required id="id_address" autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-sm-7" style="width: 100%;">
+                    <div class="mb-3"><label class="form-label" name="address">Postal code</label>
+                        <input type="text" name="post_code" class="form-control" maxlength="10" required id="id_post_code" autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-sm-7" style="width: 100%;">
+                    <div class="mb-3"><label class="form-label" name="product_size">Size</label></div>
+                    <select class="form-select" name="product_size" required id="id_product_size" autocomplete="off">
+                        <option value="" selected>---------</option>
+                        {% for size in product.size.all %}
+                            <option value="{{ size.id }}">{{ size.name }}</option>
+                        {% endfor %}          
+                    </select>                    
+                </div>
+                            <div class="col-sm-12" style="box-shadow: none;">
+                                <div class="mb-3">
+                                    <button class="btn btn-primary" type="submit"  value="Save" name="_save" style="width: 100%;height: 100%;background:rgb(255, 217, 0);border: none;">PROCEED</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+        </section>
+    </main>
+    {% endblock %}

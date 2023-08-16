@@ -1,0 +1,110 @@
+{% extends "base.html"%} {% block content %} {% if is_authenticated %}
+
+<main class="page shopping-cart-page">
+  <section class="clean-block clean-cart dark">
+    <div class="container">
+      <div class="block-heading">
+        <h1 style="color: rgb(0, 65, 130); font-family: Alatsi, sans-serif">
+          USER PROFILE
+        </h1>
+      </div>
+      <div class="content">
+        <div class="row g-0">
+          <div
+            class="col-md-12 col-lg-8"
+            style=" height: auto"
+          >
+            <div></div>
+            <h1
+              class="text-center"
+              style="font-family: Alatsi, sans-serif; margin-top: 10px"
+            >
+              Hello {{request.user.username}}
+            </h1>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Order tracker</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for order in orders %}
+                  <tr>
+                    <td>
+                      you ordered
+                      <a href="{% url 'admin_local:order_detail' order.pk %}"
+                        >{{ order.product_name }} </a
+                      >, catagory : {{ order.product_catagory }} | Status :
+                      {{order.order_status}}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div></div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <div class="summary" style="height: auto">
+              <h3>Summary</h3>
+              {% if cart %}
+              <h3>Your Cart:</h3>
+              {% for cart_item in cart %}
+              <h4>
+                <a
+                  href="{% url 'store:product_detail' cart_item.product_catagory cart_item.pk_product  %}"
+                  ><span class="text"
+                    >{{ cart_item.name }} {{ cart_item.product_category }}</span
+                  ></a
+                ><a href="{% url 'accounts:cart_item' cart_item.pk %}"
+                  ><i
+                    class="fa fa-remove"
+                    style="
+                      margin-left: 11px;
+                      font-size: 19.4px;
+                      color: var(--bs-red);
+                    "
+                  ></i
+                ></a>
+              </h4>
+              {% endfor %} {% else %}
+              <p>Your cart is empty.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div
+    class="col-md-6"
+    style="background: var(--bs-yellow); width: 100%; padding-top: 5px"
+  >
+    <a href="{% url 'accounts:logout' %}">
+      <h3
+        style="
+          font-family: Alatsi, sans-serif;
+          text-align: center;
+          color: var(--bs-white);
+        "
+      >
+        Logout
+      </h3>
+    </a>
+  </div>
+</main>
+
+{% else %}
+<div
+  style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+    height: 70vh;
+  "
+>
+  <h1>404</h1>
+</div>
+{% endif %} {% endblock %}

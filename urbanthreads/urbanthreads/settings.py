@@ -13,9 +13,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import csv
+import json
 
-for row in (csv.reader(open(r'D:\ONGOING\clothing_brand_website\credentials.csv'))):
-    print(row)
+with open(r'D:\ONGOING\clothing_brand_website\credentials.json') as config_file:
+    config_data = json.load(config_file)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9ez5f7gk!a=l&w#v7@+$tzu9p+gsj^xdkqf*5(jaejoh&=!ex('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'store',
     'admin_local'
 ]
@@ -87,7 +90,7 @@ DATABASES = {
 		'NAME' : 'urbanthreadsDataBase',
 		'HOST':'database-ut.cw7kvs5capnk.us-east-1.rds.amazonaws.com',
         'USER': 'admin',
-		'PASSWORD':row[0],
+		'PASSWORD':config_data.get('DATABEASE_PASSWORD'),
 		'PORT':'3306',
 	},
 }
@@ -137,3 +140,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AWS_ACCESS_KEY_ID = config_data.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config_data.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config_data.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

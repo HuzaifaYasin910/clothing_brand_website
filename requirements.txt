@@ -6,3 +6,5 @@ tzdata==2023.3
 django-filter==23.2
 waitress
 mysqlclient
+django-storages 
+boto3

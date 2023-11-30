@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+
 from pathlib import Path
 import os
-import csv
 import json
 
 with open(r'D:\ONGOING\clothing_brand_website\credentials.json') as config_file:
@@ -22,12 +22,11 @@ with open(r'D:\ONGOING\clothing_brand_website\credentials.json') as config_file:
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9ez5f7gk!a=l&w#v7@+$tzu9p+gsj^xdkqf*5(jaejoh&=!ex('
+SECRET_KEY = 'django-insecure-)ze^fcouq8w2c7yd#xugcrl4l8=p6*c_fb5knx@^7ghc7_*8mu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -39,15 +38,15 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
+    'admin_local.apps.AdminLocalConfig',
+    'store.apps.StoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',    
     'storages',
-    'store',
-    'admin_local'
 ]
 
 MIDDLEWARE = [
@@ -65,7 +64,7 @@ ROOT_URLCONF = 'urbanthreads.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,6 +132,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
+
 MEDIA_URL  = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -140,7 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 AWS_ACCESS_KEY_ID = config_data.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config_data.get('AWS_SECRET_ACCESS_KEY')

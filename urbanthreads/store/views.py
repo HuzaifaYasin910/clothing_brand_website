@@ -136,4 +136,4 @@ def error(request):
     Returns:
         HttpResponse: Rendered error page template.
     """
-    return render(request, 'error.html')
+    return render(request, 'store/error.html')

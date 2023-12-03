@@ -1,7 +1,8 @@
-{% extends "base.html"%} {% block content %} {% if messages %} {% for message in
-messages %}
+{% extends "base.html"%} {% block content %} {% if messages %} 
+{% for message in messages %}
 <div class="alert alert-info">{{ message }}</div>
-{% endfor %} {% endif %}
+{% endfor %} 
+ {% endif %}
 <main class="page registration-page">
   <section class="clean-block clean-form dark">
     <div class="container">

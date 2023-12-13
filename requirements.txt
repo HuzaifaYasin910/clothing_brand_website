@@ -8,3 +8,4 @@ waitress
 mysqlclient
 django-storages 
 boto3
+coverage

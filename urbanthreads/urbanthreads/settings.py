@@ -15,8 +15,8 @@ from pathlib import Path
 import os
 import json
 
-# with open(r'D:\ONGOING\clothing_brand_website\credentials.json') as config_file:
-#     config_data = json.load(config_file)
+with open(r'D:\3D Objects\ONGOING\clothing_brand_website\credentials.json') as config_file:
+    config_data = json.load(config_file)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,7 +52,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',     # NEW
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',  # NEW
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -138,8 +140,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_ACCESS_KEY_ID = 'AKIAVKD57N6X52DYPIWH'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = config_data.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config_data.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'ut1'
 AWS_S3_SIGNATURE_NAME = 's3v4',
 AWS_S3_FILE_OVERWRITE = False

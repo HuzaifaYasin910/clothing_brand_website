@@ -77,6 +77,7 @@ def collection(request, product_category, product_type):
     return render(request, 'store/product_list.html', {"products": products})
 
 
+
 def product_detail(request, product_category, product_pk):
     """
     Renders the details page of a specific product.

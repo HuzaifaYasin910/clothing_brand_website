@@ -17,8 +17,7 @@ PRODUCT_TYPE = (
     ('TSHIRTS', 'T-SHIRTS'),
     ('SHIRTS', 'SHIRTS'),
     ('TROUSERS', 'TROUSERS'),
-    ('SHOES', 'SHOES'),
-    
+    ('SHOES', 'SHOES'),  
 )
 
 
@@ -35,7 +34,7 @@ class Reviews(models.Model):
     def __str__(self):
         return f"Review by {self.user.username} on {self.post}"
 
-class Adult_size(models.Model):
+class sizes(models.Model):
     name = models.CharField(max_length=15, null=False, blank=False, default='undefined size')
 
     def __str__(self):
@@ -91,6 +90,7 @@ class Boys(models.Model):
         return  self.name
 
 
+
 class Girls(models.Model):
     image   = models.ImageField(null=False,upload_to='g_images/')
     name    = models.CharField(max_length=30, blank=False)
@@ -108,5 +108,44 @@ class Girls(models.Model):
     
 
 
+class Clothing(models.Model):
+    GENDER_CHOICES = (
+        ('M', 'MEN'),
+        ('W', 'WOMEN'),
+        ('B', 'BOYS'),
+        ('G', 'GIRLS')
+    )
+
+    AGE_GROUP_CHOICES = (
+        ('A', 'Adult'),
+        ('M', 'Minor'),
+    )
+
+    PRODUCT_TYPE = (
+    ('PANTS', 'PANTS'),
+    ('SHORTS', 'SHORTS'),
+    ('TSHIRTS', 'T-SHIRTS'),
+    ('SHIRTS', 'SHIRTS'),
+    ('TROUSERS', 'TROUSERS'),
+    ('SHOES', 'SHOES'),  
+    )
+
+    image = models.ImageField(null=False, upload_to='products_images/')
+    name = models.CharField(max_length=30, blank=False)
+    price = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
+    article = models.CharField(max_length=30, null=False, blank=False, unique=True, default='-------')
+    size = models.ManyToManyField(sizes)  
+    qty = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
+    color = models.CharField(max_length=30, blank=True, default='None')
+    category = models.CharField(max_length=1, choices=GENDER_CHOICES, default='')
+    age_group = models.CharField(max_length=1, choices=AGE_GROUP_CHOICES, default='')
+    clothing_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, default='')
+
+    def content_file_name(self, filename):
+        ext = filename.split('.')[-1]
+        return '/'.join(['uploads', self.Clothing.name, filename])
+
+    def __str__(self):
+        return self.name
 
 

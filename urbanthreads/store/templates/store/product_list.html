@@ -1,11 +1,13 @@
 {% extends 'base.html' %} {% block content %} {% if products %}
+<!-- product list -->
 <section class="clean-block clean-services light">
+  
   <div class="container">
     <div style="height: 100px"></div>
     <div class="row">
       {% for product in products %}
       <div class="col-md-6 col-lg-4">
-        <a href="{% url 'store:product_detail' product.catagory product.pk %}">
+        <a href="{% url 'store:product_detail' product.pk %}">
           <div
             class="card"
             style="background: rgba(255, 255, 255, 0); border: 0"
@@ -26,7 +28,7 @@
                 {{ product.name }}
               </p>
               <p class="text-start" style="color: var(--bs-gray-900)">
-                $ {{ product.price }}
+                $ {{ product.price }} 
               </p>
             </div>
           </div>

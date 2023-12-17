@@ -1,10 +1,6 @@
 from django.contrib import admin
-from .models import *
+from .models import Reviews ,sizes ,Clothing
 # Register your models here.
-admin.site.register(Adult_size)
-admin.site.register(Minor_size)
-admin.site.register(Women)
-admin.site.register(Men)
-admin.site.register(Boys)
-admin.site.register(Girls)
 admin.site.register(Reviews)
+admin.site.register(Clothing)
+admin.site.register(sizes)

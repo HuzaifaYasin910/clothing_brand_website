@@ -15,11 +15,18 @@ from pathlib import Path
 import os
 import json
 
-with open(r'D:\3D Objects\ONGOING\clothing_brand_website\credentials.json') as config_file:
-    config_data = json.load(config_file)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+json_file_path = BASE_DIR / 'credentials.json'
+json_file_path = Path(json_file_path.as_posix())
+try:
+     with open(json_file_path, 'r') as config_file:
+        config_data = json.load(config_file)
+except:
+    print('######### Error With Json File ########')
 
 # Quick-start development settings - unsuitable for production 
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -52,9 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.cache.UpdateCacheMiddleware',     # NEW
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',  # NEW
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

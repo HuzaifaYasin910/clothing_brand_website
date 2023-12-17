@@ -1,3 +1,4 @@
 {% extends 'base.html' %}
 {% block content %}
-<div style="display: flex;align-items:center;justify-content: center;background-color: rgb(255, 255, 255);height: 70vh;"><h1 style="font-size: 60px;">something went wrong!(404)</h1></div>{% endblock %}
+
+<div style="display: flex;align-items:center;justify-content: center;background-color: rgb(255, 255, 255);height: 70vh;"><h1 style="font-size: 60px;">something went wrong!({{error_message}})</h1></div>{% endblock %}

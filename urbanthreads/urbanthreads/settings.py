@@ -14,19 +14,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import json
-
+from .config import load_configurations
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-json_file_path = BASE_DIR / 'credentials.json'
-json_file_path = Path(json_file_path.as_posix())
-try:
-     with open(json_file_path, 'r') as config_file:
-        config_data = json.load(config_file)
-except:
-    print('######### Error With Json File ########')
+config_data = load_configurations()
+
 
 # Quick-start development settings - unsuitable for production 
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -35,7 +30,7 @@ except:
 SECRET_KEY = 'django-insecure-)ze^fcouq8w2c7yd#xugcrl4l8=p6*c_fb5knx@^7ghc7_*8mu'
 # False
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,6 +39,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
      'accounts.apps.AccountsConfig',
      'admin_local.apps.AdminLocalConfig',
      'store.apps.StoreConfig',
@@ -58,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -151,7 +148,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AWS_ACCESS_KEY_ID = config_data.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config_data.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'ut1'
+AWS_STORAGE_BUCKET_NAME = config_data.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_SIGNATURE_NAME = 's3v4',
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None

@@ -11,7 +11,6 @@ from django.db import transaction
 import uuid
 
 def login_view(request):
-    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -75,13 +74,17 @@ def logout_view(request):
     return redirect('/home',{"is_authenticated":False})    
 
 
-def checkout(request, product_pk, product_catagory, product_name, product_price):
+
+
+def checkout(request, product_pk, product_category, product_name ):
     if request.user.is_authenticated:
-        check = qty_check(product_pk, product_catagory)
+        check = qty_check(product_pk, product_category)
         is_available = check['is_available']
         product = check['product']
         user = request.user
-        product = product_check(product_pk, product_catagory)
+        product = product_check(product_pk, product_category)
+        product_sizes = list(product.size.all())
+        print (product_sizes)
         profile = get_object_or_404(User, pk=user.pk) 
         if request.method == 'POST' and is_available:
             form = CheckoutForm(request.POST)
@@ -95,9 +98,9 @@ def checkout(request, product_pk, product_catagory, product_name, product_price)
                     address=form.cleaned_data['address'],
                     post_code=form.cleaned_data['post_code'],
                     product_size=form.cleaned_data['product_size'],
-                    price=product_price,
+                    price=product.price,
                     product_name=product_name,
-                    product_catagory=product_catagory,
+                    product_catagory=product_category,
                     product_pk=product_pk,
                     user=profile
                 )
@@ -108,32 +111,29 @@ def checkout(request, product_pk, product_catagory, product_name, product_price)
                 messages.success(request, 'Order placed successfully!')
                 return redirect('accounts:user_profile')
         else:
-            form = CheckoutForm(initial={
-                'product_catagory': product_catagory,
-                'product_pk': product_pk,
-                'product_name': product_name,
-                'price': product_price
-            })
-        return render(request, 'accounts/checkout.html', {'form':form,'product':product,})
+            form = CheckoutForm(
+                initial={
+                    'product_catagory': product_category,
+                    'product_pk': product_pk,
+                    'product_name': product_name,
+                    'price': product.price,
+                },
+                product_sizes=product_sizes  
+            )
+        return render(request, 'accounts/checkout.html', {'form': form, 'product': product})
+        
     else:
         messages.error(request, 'You have to log in first to make orders.')
         return redirect('accounts:login')
-
-
-
-
 
 def qty_check(product_pk, product_catagory):    
     product = get_object_or_404(Clothing, pk=product_pk)
     is_available = product.qty >= 1
     return {'is_available': is_available, 'product': product}
 
-
-
 def cart(request,product_pk,product_catagory,product_name):
-
     if request.user.is_authenticated:
-        user = request.user
+        user        = request.user
         new_object = Cart.objects.create(name=product_name,pk_product=product_pk, product_catagory=product_catagory,user=user)
         return redirect('accounts:user_profile')
     else:
@@ -147,9 +147,5 @@ def delete_cart_item(request,cart_pk):
     required_object.delete()
     return redirect('accounts:user_profile')
 
-
-
 def product_check(product_pk, product_catagory):
-  
-    product = get_object_or_404(Clothing, pk=product_pk)
-    return product
+    return get_object_or_404(Clothing, pk=product_pk)

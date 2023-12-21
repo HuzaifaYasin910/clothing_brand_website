@@ -44,7 +44,7 @@
                     </button>
                   </a>
                   <a
-                    href="{% url 'accounts:checkout' product.pk 'product.category' 'product.name' product.price %}"
+                    href="{% url 'accounts:checkout' product.pk product.category product.name %}"
                   >
                     <button
                       class="btn btn-primary"

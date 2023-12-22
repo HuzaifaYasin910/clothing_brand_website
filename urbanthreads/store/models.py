@@ -7,19 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 
 
 
-class Reviews(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    # GenericForeignKey fields to link to different product models
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    post = GenericForeignKey('content_type', 'object_id')
-
-    def __str__(self):
-        return f"Review by {self.user.username} on {self.post}"
-
-class sizes(models.Model):
+class Size(models.Model):
     name = models.CharField(max_length=15, null=False, blank=False, default='undefined size')
     def __str__(self):
         return self.name
@@ -52,7 +40,7 @@ class Clothing(models.Model):
     name = models.CharField(max_length=30, blank=False)
     price = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     article = models.CharField(max_length=30, null=False, blank=False, unique=True, default='-------')
-    size = models.ManyToManyField(sizes)  
+    size = models.ManyToManyField(Size)  
     qty = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     color = models.CharField(max_length=30, blank=True, default='None')
     category = models.CharField(max_length=1, choices=GENDER_CHOICES, default='')
@@ -61,7 +49,20 @@ class Clothing(models.Model):
 
     def content_file_name(self, filename):
         ext = filename.split('.')[-1]
-        return '/'.join(['uploads', self.Clothing.name, filename])
+        return '/'.join(['uploads', self.name, filename])
 
     def __str__(self):
         return self.name
+    
+
+
+class ClothingSizeQuantity(models.Model):
+    clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
+
+    class Meta:
+        unique_together = ('clothing', 'size',)
+
+    def __str__(self):
+        return f"{self.clothing.name} - {self.size.name} - Qty: {self.quantity}"

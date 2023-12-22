@@ -78,9 +78,8 @@ def logout_view(request):
 
 def checkout(request, product_pk, product_category, product_name ):
     if request.user.is_authenticated:
-        check = qty_check(product_pk, product_category)
-        is_available = check['is_available']
-        product = check['product']
+        is_available = ['is_available']
+        product = ['product']
         user = request.user
         product = product_check(product_pk, product_category)
         product_sizes = list(product.size.all())
@@ -90,36 +89,11 @@ def checkout(request, product_pk, product_category, product_name ):
             form = CheckoutForm(request.POST)
             if form.is_valid():
                 order_un_id = str(uuid.uuid4())
-                new_order = Order(
-                    order_un_id=order_un_id, 
-                    name=form.cleaned_data['name'],
-                    email=form.cleaned_data['email'],
-                    telephone=form.cleaned_data['telephone'],
-                    address=form.cleaned_data['address'],
-                    post_code=form.cleaned_data['post_code'],
-                    product_size=form.cleaned_data['product_size'],
-                    price=product.price,
-                    product_name=product_name,
-                    product_catagory=product_category,
-                    product_pk=product_pk,
-                    user=profile
-                )
-                new_order.save()
-                with transaction.atomic():
-                    product.qty -= 1
-                    product.save()
+                form.save()
                 messages.success(request, 'Order placed successfully!')
                 return redirect('accounts:user_profile')
         else:
-            form = CheckoutForm(
-                initial={
-                    'product_catagory': product_category,
-                    'product_pk': product_pk,
-                    'product_name': product_name,
-                    'price': product.price,
-                },
-                product_sizes=product_sizes  
-            )
+            form = CheckoutForm()
         return render(request, 'accounts/checkout.html', {'form': form, 'product': product})
         
     else:

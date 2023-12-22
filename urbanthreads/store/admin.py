@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Reviews ,sizes ,Clothing
+from .models import Size ,Clothing
 # Register your models here.
-admin.site.register(Reviews)
 admin.site.register(Clothing)
-admin.site.register(sizes)
+admin.site.register(Size)

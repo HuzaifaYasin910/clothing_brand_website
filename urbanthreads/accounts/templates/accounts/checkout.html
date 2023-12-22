@@ -8,54 +8,8 @@
     <div class="block-heading"><h1 style="font-family: Alatsi, sans-serif;color: rgb(0,59,118);">Payment</h1></div>
     <form - method="post" id="form">
     {% csrf_token %}
-                    <div class="products">
-                        <h3 class="title">Checkout</h3>
-                        <div class="item">
-                        <span class="price">{{product.price}}$</span>
-                        <p class="item-name">{{product.name}}</p>
-                        </div>
-                        <div class="total">
-                        <span>Total</span>
-                        <span class="price"></span>
-                        </div>
-                    </div>
+    {{ form.as_p }} 
 
-    <div class="card-details">
-            <div class="col-sm-7" style="width: 100%;">
-                <div class="mb-3">
-                    <label class="form-label" name="name">Full name</label>
-                    {{ form.name.errors }}
-                    {{ form.name }}
-                </div>
-            </div>
-            <div class="col-sm-7" style="width: 100%;">
-                <div class="mb-3">
-                    <label class="form-label" name="address">Email</label>
-                    {{ form.email.errors }}
-                    {{ form.email }}
-                </div>
-            </div>
-            <div class="col-sm-7" style="width: 100%;">
-                <div class="mb-3">
-                    <label class="form-label" name="address">Telephone</label>
-                    {{ form.telephone.errors }}
-                    {{ form.telephone }}
-                </div>
-            </div>
-            <div class="col-sm-7" style="width: 100%;">
-                <div class="mb-3">
-                    <label class="form-label" name="address">Address</label>
-                    {{ form.address.errors }}
-                    {{ form.address }}
-                </div>
-            </div>
-            <div class="col-sm-7" style="width: 100%;">
-                <div class="mb-3">
-                    <label class="form-label" name="address">Postal code</label>
-                    {{ form.post_code.errors }}
-                    {{ form.post_code }}
-                </div>
-            </div>
             <div class="col-sm-7" style="width: 100%;">
                 <div class="mb-3">
                     <label class="form-label" name="product_size">Size</label>

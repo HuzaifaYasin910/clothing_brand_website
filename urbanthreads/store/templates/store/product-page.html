@@ -14,11 +14,13 @@
                 <div id="product-preview" class="vanilla-zoom">
                   <div class="zoomed-image" style="height: 700px"></div>
                   <div class="sidebar">
+                    {% for image in product.product_images.all %}
                     <img
                       class="img-fluid d-block small-preview"
-                      src="{{ product.image.url }}"
+                      src="{{ image.image.url }}"
                       onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"
                     />
+                   {% endfor %}
                   </div>
                 </div>
               </div>
@@ -26,15 +28,12 @@
             <div class="col-md-6">
               <div class="info">
                 <h3 style="font-family: Alatsi, sans-serif">
-                  {{product.name}}
+                  {{product.product_name}}
                 </h3>
                 <h5 style="font-family: Alatsi, sans-serif">
                   $ {{product.price}}
                 </h5>
                 <div class="price" style="border-top-style: solid">
-                  <a
-                    href="{% url 'accounts:cart' product.pk product.category product.name  %}"
-                  >
                     <button
                       class="btn"
                       type="button"
@@ -43,9 +42,6 @@
                       Add To Cart
                     </button>
                   </a>
-                  <a
-                    href="{% url 'accounts:checkout' product.pk product.category product.name %}"
-                  >
                     <button
                       class="btn btn-primary"
                       type="button"

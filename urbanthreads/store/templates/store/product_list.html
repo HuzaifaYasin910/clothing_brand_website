@@ -13,7 +13,7 @@
             style="background: rgba(255, 255, 255, 0); border: 0"
           >
             <img
-              src="{{ product.image.url }}"
+              src="{{product.product_images.image.url }}"
               onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"
               class="card-img-top w-100 d-block"
             />
@@ -25,7 +25,7 @@
                 class="text-start"
                 style="color: var(--bs-gray-900); margin-bottom: 0px"
               >
-                {{ product.name }}
+                {{ product.product_name }}
               </p>
               <p class="text-start" style="color: var(--bs-gray-900)">
                 $ {{ product.price }} 

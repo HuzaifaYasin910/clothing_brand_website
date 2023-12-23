@@ -7,9 +7,10 @@ def home(request):
     return render(request, 'store/home.html')
 
 
+
 def product(request, product_category):
     try:
-        products = Clothing.objects.filter(category=product_category)
+        products = Clothing.objects.filter(product_category=product_category)
         if not products.exists():
             raise Clothing.DoesNotExist("No products found for the given category.")
         return render(request, 'store/product_list.html', {"products": products})
@@ -24,16 +25,17 @@ def collection(request, product_type,product_category):
     products = Clothing.objects.filter(product_category=product_category,clothing_type=product_type)
     return render(request, 'store/product_list.html', {"products": products})
 
-def product_detail(request , product_pk):   
+def product_detail(request , product_id):
     try:
-        product = get_object_or_404(Clothing, pk=product_pk)
+        product = get_object_or_404(Clothing, pk=product_id)
+        
         return render(request, 'store/product-page.html', {
             'product': product,
         })
     except Exception as e:
         print('################### error - product detail ###################')
         print(f"Error: {e}")
-        return render(request, 'store/error.html', {"error_message": "Category not found."})
+        return render(request, 'store/error.html', {"error_message": e})
 
 def error(request):
     return render(request, 'store/error.html')

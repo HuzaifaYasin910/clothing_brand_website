@@ -7,12 +7,14 @@ from base.models import BaseModel
 
 
 
-class Size(BaseModel):
-    name = models.CharField(max_length=15, null=False, blank=False, default='undefined size')
+class ClothingSize(BaseModel):
+    size_name       = models.CharField(max_length=15, null=False, blank=False, default='undefined size')
+    size_qty        = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     def __str__(self):
-        return self.name
+        return self.size_name
 
-
+class ClothingColors(BaseModel):
+    color = models.CharField(max_length=30)  
 
 class Clothing(BaseModel):
     GENDER_CHOICES = (
@@ -39,30 +41,24 @@ class Clothing(BaseModel):
     product_name    = models.CharField(max_length=30, blank=False)
     product_price   = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     product_article = models.CharField(max_length=30, null=False, blank=False, unique=True, default='-------')
-    product_size    = models.ManyToManyField(Size)  
-    product_qty     = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
-    product_color   = models.CharField(max_length=30, blank=True, default='None')
+    product_size    = models.ManyToManyField(ClothingSize)  
+    product_color   = models.ManyToManyField(ClothingColors)
     product_category = models.CharField(max_length=1, choices=GENDER_CHOICES, default='')
-    product_clothing_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, default='')
+    product_clothing_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, default='')    
 
-    def content_file_name(self, filename):
-        ext = filename.split('.')[-1]
-        return '/'.join(['uploads', self.uid])
+    def calculate_total_quantity(self):
+        return sum(size.size_qty for size in self.product_size.all())
+
+    @property
+    def total_quantity(self):
+        return self.calculate_total_quantity()
 
     def __str__(self):
         return self.product_name
     
 class ClothingImages(BaseModel):
     clothing        = models.ForeignKey(Clothing,on_delete=models.CASCADE,related_name='product_images')
-    image           = models.ImageField(null=False, upload_to='products_images/')
-
-class ClothingSizeQuantity(BaseModel):
-    clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
-
-    class Meta:
-        unique_together = ('clothing', 'size',)
+    image           = models.ImageField(null=False, upload_to='images/')
 
     def __str__(self):
-        return f"{self.clothing.name} - {self.size.name} - Qty: {self.quantity}"
+        return self.clothing.product_name

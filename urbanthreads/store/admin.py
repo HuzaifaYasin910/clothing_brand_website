@@ -1,22 +1,30 @@
 from django.contrib import admin
 from .models import (
-    Size,
+    ClothingSize,
     Clothing,
-    ClothingSizeQuantity,
-    ClothingImages
+    ClothingImages,
+    ClothingColors
 )
 
 
 # Register your models here.
-admin.site.register(Size)
 
 class ClothingImagesAdmin(admin.StackedInline):
     model = ClothingImages
 
+@admin.register(ClothingColors)
+class ClothingColorsAdmin(admin.ModelAdmin):
+    model = ClothingColors
+
+@admin.register(ClothingSize)
+class ClothingSizeAdmin(admin.ModelAdmin):
+    model = ClothingSize
+
 class ClothingAdmin(admin.ModelAdmin):
     inlines = [ClothingImagesAdmin]
+
+
 
 admin.site.register(Clothing,ClothingAdmin)
 
 admin.site.register(ClothingImages)
-admin.site.register(ClothingSizeQuantity)

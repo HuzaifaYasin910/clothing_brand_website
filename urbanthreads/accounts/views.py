@@ -69,7 +69,6 @@ def user_profile(request):
 
     
 def logout_view(request):
-   
     logout(request)
     return redirect('/home',{"is_authenticated":False})    
 
@@ -78,14 +77,12 @@ def logout_view(request):
 
 def checkout(request, product_pk, product_category, product_name ):
     if request.user.is_authenticated:
-        is_available = ['is_available']
         product = ['product']
         user = request.user
-        product = product_check(product_pk, product_category)
+        product = get_object_or_404(Clothing , pk=product_pk)
         product_sizes = list(product.size.all())
-        print (product_sizes)
         profile = get_object_or_404(User, pk=user.pk) 
-        if request.method == 'POST' and is_available:
+        if request.method == 'POST':
             form = CheckoutForm(request.POST)
             if form.is_valid():
                 order_un_id = str(uuid.uuid4())
@@ -99,11 +96,6 @@ def checkout(request, product_pk, product_category, product_name ):
     else:
         messages.error(request, 'You have to log in first to make orders.')
         return redirect('accounts:login')
-
-def qty_check(product_pk, product_catagory):    
-    product = get_object_or_404(Clothing, pk=product_pk)
-    is_available = product.qty >= 1
-    return {'is_available': is_available, 'product': product}
 
 def cart(request,product_pk,product_catagory,product_name):
     if request.user.is_authenticated:
@@ -120,6 +112,3 @@ def delete_cart_item(request,cart_pk):
     required_object = get_object_or_404(Cart, pk=cart_pk)
     required_object.delete()
     return redirect('accounts:user_profile')
-
-def product_check(product_pk, product_catagory):
-    return get_object_or_404(Clothing, pk=product_pk)

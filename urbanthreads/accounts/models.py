@@ -3,9 +3,11 @@ from django.core.validators import RegexValidator
 import uuid
 from django.contrib.auth.models import User 
 from store.models import Clothing
+from base.models import BaseModel
 
 
-class Order(models.Model):
+
+class Order(BaseModel):
     ORDER_STATUS = (
         ('pending', 'PENDING'),
         ('dispatched', 'DISPATCHED'),
@@ -24,7 +26,7 @@ class Order(models.Model):
     def __str__(self):
         return f'Order by {self.name} ' 
 
-class Address(models.Model):
+class Address(BaseModel):
     COUNTRY_CHOICES = (
         ('pakistan', 'Pakistan'),
         ('australia', 'Australia'),
@@ -47,7 +49,7 @@ class Address(models.Model):
         return f'{self.first_name} {self.last_name} from {self.city} , {self.country}'
     
 
-class CartProduct(models.Model):
+class CartProduct(BaseModel):
     refering_cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
     product = models.ForeignKey(Clothing, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
@@ -57,8 +59,6 @@ class CartProduct(models.Model):
 
 
 
-class Cart(models.Model):
-    name            = models.CharField(max_length=100)
-    products        = models.ManyToManyField(Clothing)
-    cart_products = models.ManyToManyField(CartProduct)
+class Cart(BaseModel):
+    cart_products   = models.ManyToManyField(CartProduct)
     user            = models.ForeignKey(User, on_delete=models.CASCADE)

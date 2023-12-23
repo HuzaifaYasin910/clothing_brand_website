@@ -38,17 +38,17 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
-     'accounts.apps.AccountsConfig',
-     'admin_local.apps.AdminLocalConfig',
-     'store.apps.StoreConfig',
-     'django.contrib.admin',
-     'django.contrib.auth',
-     'django.contrib.contenttypes',
-     'django.contrib.sessions',
-     'django.contrib.messages',
-     'django.contrib.staticfiles',    
-     'storages',
+        'whitenoise.runserver_nostatic',
+        'accounts.apps.AccountsConfig',
+        'admin_local.apps.AdminLocalConfig',
+        'store.apps.StoreConfig',
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',    
+        'storages',
 ]
 
 MIDDLEWARE = [
@@ -88,15 +88,14 @@ WSGI_APPLICATION = 'urbanthreads.wsgi.application'
 
 DATABASES = {
 	'default':{
-		'ENGINE':'django.db.backends.mysql',
-		'NAME' : 'urbanthreadsdatabase',
-		'HOST':'urbanthreadsdatabase.cw7kvs5capnk.us-east-1.rds.amazonaws.com',
-        'USER': 'admin',
-		'PASSWORD':config_data.get('DATABEASE_PASSWORD'),
-		'PORT':'3306',
-	},
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME'  : 'urbanthreadsdatabase',
+		'HOST'  : 'urbanthreadsdatabase.cw7kvs5capnk.us-east-1.rds.amazonaws.com',
+        'USER'  : 'admin',
+		'PASSWORD': config_data.get('DATABEASE_PASSWORD'),
+		'PORT'  : '3306',
+	},	
 }
-
 
 
 # Password validation

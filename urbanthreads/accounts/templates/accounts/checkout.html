@@ -10,13 +10,12 @@
     {% csrf_token %}
     {{ form.as_p }} 
 
-            <div class="col-sm-7" style="width: 100%;">
-                <div class="mb-3">
-                    <label class="form-label" name="product_size">Size</label>
-                </div>
-                {{ form.product_size.errors }}
-                {{ form.product_size }}                   
-            </div>
+    <select class="form-select" name="product_size" required id="id_product_size" autocomplete="off">
+        <option value="" selected>---------</option>
+        {% for size in product.size.all %}
+            <option value="{{ size.id }}">{{ size.name }}</option>
+        {% endfor %}          
+    </select>    
             <div class="col-sm-12" style="box-shadow: none;">
                 <div class="mb-3">
                     <button class="btn btn-primary" type="submit"  value="Save" name="_save" style="width: 100%;height: 100%;background:rgb(255, 217, 0);border: none;">PROCEED</button>

@@ -3,30 +3,24 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from base.models import BaseModel
 
 
 
-
-class Size(models.Model):
+class Size(BaseModel):
     name = models.CharField(max_length=15, null=False, blank=False, default='undefined size')
     def __str__(self):
         return self.name
 
 
 
-class Clothing(models.Model):
+class Clothing(BaseModel):
     GENDER_CHOICES = (
         ('M', 'M'),
         ('W', 'W'),
         ('B', 'B'),
         ('G', 'G')
     )
-
-    AGE_GROUP_CHOICES = (
-        ('A', 'Adult'),
-        ('M', 'Minor'),
-    )
-
     PRODUCT_TYPE = (
     ('PANTS', 'PANTS'),
     ('SHORTS', 'SHORTS'),
@@ -34,29 +28,35 @@ class Clothing(models.Model):
     ('SHIRTS', 'SHIRTS'),
     ('TROUSERS', 'TROUSERS'),
     ('SHOES', 'SHOES'),  
+    ('SWEATSHIRTS', 'SWEATSHIRTS'),
+    ('HOODIES', 'HOODIES'),
+    ('SWEATERS', 'SWEATERS'),
+    ('JACKETS', 'JACKETS'),
+    ('JEANS', 'JEANS'),
+    ('ACTIVEWEAR', 'ACTIVEWEAR'),
+    ('ACCESSORIES', 'ACCESSORIES'),
     )
-
-    image = models.ImageField(null=False, upload_to='products_images/')
-    name = models.CharField(max_length=30, blank=False)
-    price = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
-    article = models.CharField(max_length=30, null=False, blank=False, unique=True, default='-------')
-    size = models.ManyToManyField(Size)  
-    qty = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
-    color = models.CharField(max_length=30, blank=True, default='None')
-    category = models.CharField(max_length=1, choices=GENDER_CHOICES, default='')
-    age_group = models.CharField(max_length=1, choices=AGE_GROUP_CHOICES, default='')
-    clothing_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, default='')
+    product_name    = models.CharField(max_length=30, blank=False)
+    product_price   = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
+    product_article = models.CharField(max_length=30, null=False, blank=False, unique=True, default='-------')
+    product_size    = models.ManyToManyField(Size)  
+    product_qty     = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
+    product_color   = models.CharField(max_length=30, blank=True, default='None')
+    product_category = models.CharField(max_length=1, choices=GENDER_CHOICES, default='')
+    product_clothing_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, default='')
 
     def content_file_name(self, filename):
         ext = filename.split('.')[-1]
-        return '/'.join(['uploads', self.name, filename])
+        return '/'.join(['uploads', self.uid])
 
     def __str__(self):
-        return self.name
+        return self.product_name
     
+class ClothingImages(BaseModel):
+    clothing        = models.ForeignKey(Clothing,on_delete=models.CASCADE,related_name='product_images')
+    image           = models.ImageField(null=False, upload_to='products_images/')
 
-
-class ClothingSizeQuantity(models.Model):
+class ClothingSizeQuantity(BaseModel):
     clothing = models.ForeignKey(Clothing, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])

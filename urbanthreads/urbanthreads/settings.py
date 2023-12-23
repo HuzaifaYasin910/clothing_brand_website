@@ -39,7 +39,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
         'whitenoise.runserver_nostatic',
-        'accounts.apps.AccountsConfig',
+        #'accounts.apps.AccountsConfig',
         'admin_local.apps.AdminLocalConfig',
         'store.apps.StoreConfig',
         'django.contrib.admin',
@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'urbanthreads.wsgi.application'
 DATABASES = {
 	'default':{
 		'ENGINE': 'django.db.backends.mysql',
-		'NAME'  : 'urbanthreadsdatabase',
-		'HOST'  : 'urbanthreadsdatabase.cw7kvs5capnk.us-east-1.rds.amazonaws.com',
-        'USER'  : 'admin',
+		'NAME'  : config_data.get('DATABEASE_NAME'),
+		'HOST'  : config_data.get('DATABEASE_HOST'),
+        'USER'  : config_data.get('DATABEASE_USER'),
 		'PASSWORD': config_data.get('DATABEASE_PASSWORD'),
 		'PORT'  : '3306',
 	},	

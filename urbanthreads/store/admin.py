@@ -16,10 +16,6 @@ class ClothingImagesAdmin(admin.StackedInline):
 class ClothingColorsAdmin(admin.ModelAdmin):
     model = ClothingColors
 
-@admin.register(ClothingSize)
-class ClothingSizeAdmin(admin.ModelAdmin):
-    model = ClothingSize
-
 class ClothingAdmin(admin.ModelAdmin):
     inlines = [ClothingImagesAdmin]
 

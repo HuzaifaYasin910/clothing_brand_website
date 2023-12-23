@@ -7,14 +7,15 @@ from base.models import BaseModel
 
 
 
-class ClothingSize(BaseModel):
+class Size(BaseModel):
     size_name       = models.CharField(max_length=15, null=False, blank=False, default='undefined size')
-    size_qty        = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     def __str__(self):
         return self.size_name
 
 class ClothingColors(BaseModel):
-    color = models.CharField(max_length=30)  
+    color           = models.CharField(max_length=30)  
+
+
 
 class Clothing(BaseModel):
     GENDER_CHOICES = (
@@ -23,6 +24,7 @@ class Clothing(BaseModel):
         ('B', 'B'),
         ('G', 'G')
     )
+
     PRODUCT_TYPE = (
     ('PANTS', 'PANTS'),
     ('SHORTS', 'SHORTS'),
@@ -40,8 +42,7 @@ class Clothing(BaseModel):
     )
     product_name    = models.CharField(max_length=30, blank=False)
     product_price   = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
-    product_article = models.CharField(max_length=30, null=False, blank=False, unique=True, default='-------')
-    product_size    = models.ManyToManyField(ClothingSize)  
+    product_article = models.CharField(max_length=30, null=False, blank=False, unique=True, default='-------') 
     product_color   = models.ManyToManyField(ClothingColors)
     product_category = models.CharField(max_length=1, choices=GENDER_CHOICES, default='')
     product_clothing_type = models.CharField(max_length=20, choices=PRODUCT_TYPE, default='')    
@@ -59,6 +60,11 @@ class Clothing(BaseModel):
 class ClothingImages(BaseModel):
     clothing        = models.ForeignKey(Clothing,on_delete=models.CASCADE,related_name='product_images')
     image           = models.ImageField(null=False, upload_to='images/')
+
+class ClothingSize(models.Model):
+    clothing        = models.ForeignKey('Clothing', on_delete=models.CASCADE)
+    size            = models.ForeignKey(Size, on_delete=models.CASCADE)
+    quantity        = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
 
     def __str__(self):
         return self.clothing.product_name

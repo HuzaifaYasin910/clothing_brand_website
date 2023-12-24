@@ -32,7 +32,13 @@
                 </h3>
                 <h5 style="font-family: Alatsi, sans-serif">
                   $ {{product.price}}
+                  {% for colors in product.clothing_color.color %}
+                  {{colors}}
+                  {% endfor %}
                 </h5>
+                {% for colors in product.clothing_color.color %}
+                  {{colors}}
+                  {% endfor %}
                 <div class="price" style="border-top-style: solid">
                     <button
                       class="btn"

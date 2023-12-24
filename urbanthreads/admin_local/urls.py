@@ -1,9 +1,13 @@
 from django.urls import path
 from .views import *
-
-app_name = 'admin_local'
-
+from .views import (
+    create_clothing,
+    update_clothing,
+    delete_clothing
+)
 urlpatterns = [
-    # path('order_detail/<int:order_pk>',order_detail,name='order_detail'),
-    # path('test',clothing_create_view)
+    # Other URL patterns
+    path('clothing/create/', create_clothing, name='create_clothing'),
+    path('clothing/<int:pk>/update/', update_clothing, name='update_clothing'),
+    path('clothing/<int:pk>/delete/', delete_clothing, name='delete_clothing'),
 ]

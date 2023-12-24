@@ -1,92 +1,119 @@
-# from django.http import HttpResponse
-# from django.shortcuts import render,get_object_or_404,redirect
-# from accounts.models import Order
-# from django.db.models import Q
-# from store.models import *
-# from .forms import ClothingForm
-# # Create your views here.
+from django.http import HttpResponse
+from accounts.models import Order
+from django.db.models import Q
+from store.models import *
+from .forms import ClothingForm
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.views.generic import ListView
+from django.shortcuts import (
+    render,
+    get_object_or_404,
+    redirect
+)
 
-# PRODUCT_TYPE = (
-#     ('PANTS', 'PANTS'),
-#     ('SHORTS', 'SHORTS'),
-#     ('TSHIRTS', 'T-SHIRTS'),
-#     ('SHIRTS', 'SHIRTS'),
-#     ('TROUSERS', 'TROUSERS'),
-#     ('SHOES', 'SHOES'),
-# )
-# """
-# A tuple containing choices for product types with their display names.
+from django.views.generic.edit import (
+    CreateView,
+    UpdateView
+)
+from .forms import (
+    ClothingForm, 
+    ClothingSizeFormSet, 
+    ClothingImagesFormSet,
+    ClothingColorsFormSet
+)
+from store.models import( 
+    Clothing, 
+    ClothingSize, 
+    ClothingColors, 
+    ClothingImages
+)
 
-# Each element in the tuple is a two-tuple consisting of the product type code and its display name.
-# """
 
-# order_count = Order.objects.all().count()
-# """
-# An integer representing the total count of all orders in the system.
-# """
+from django.shortcuts import render, redirect, get_object_or_404
 
-# PRODUCT_TYPE = ['PANTS', 'SHORTS', 'TSHIRTS', 'SHIRTS', 'TROUSERS', 'SHOES']
-# """
-# A list containing product type codes as strings.
+from django.shortcuts import render, redirect
+from .forms import ClothingForm, ClothingSizeFormSet, ClothingImagesFormSet, ClothingColorsFormSet
 
-# Each element in the list represents a valid product type code that can be used for filtering products.
-# """
+def create_clothing(request):
+    if request.method == 'POST':
+        clothing_form = ClothingForm(request.POST)
+        size_formset = ClothingSizeFormSet(request.POST, prefix='size')
+        images_formset = ClothingImagesFormSet(request.POST, request.FILES, prefix='images')
+        colors_formset = ClothingColorsFormSet(request.POST, prefix='colors')
 
-# def order_detail(request, order_pk):
-#     """
-#     Renders the order detail view for the specified order.
+        if clothing_form.is_valid() and size_formset.is_valid() and images_formset.is_valid() and colors_formset.is_valid():
+            clothing = clothing_form.save()
+            # Save the sizes
+            if size_formset.is_valid():
+               
+                size_formset.instance = clothing
+                size_formset.save()
 
-#     This view allows authorized staff to update the order status.
+            # Save the images
+            if images_formset.is_valid():
+               
+                images_formset.instance = clothing
+                images_formset.save()
 
-#     Args:
-#         request (HttpRequest): The HTTP request object.
-#         order_pk (int): The primary key of the order to display.
+            # Save the colors
+            if colors_formset.is_valid():
+                for x in size_formset:
+                    print(x)
+                colors_formset.instance = clothing
+                colors_formset.save()
 
-#     Returns:
-#         HttpResponse: Rendered order-detail.html template with context data.
-#     """
-#     is_staff = False
-#     if request.user.is_authenticated and request.user.is_staff:
-#         is_staff = True
-#     order = get_object_or_404(Order, pk=order_pk)
-#     if request.method == 'POST':
-#         new_status = request.POST.get('new_status')
-#         order.order_status = new_status
-#         order.save()
-#         return redirect(f'/order_detail/{order_pk}')
-#     return render(request, 'admin_local/order-detail.html', {
-#         'order': order,
-#         'is_staff': is_staff,
-#     })
+            return redirect('clothing_detail', pk=clothing.pk)
+    else:
+        clothing_form = ClothingForm()
+        size_formset = ClothingSizeFormSet(prefix='size')
+        images_formset = ClothingImagesFormSet(prefix='images')
+        colors_formset = ClothingColorsFormSet(prefix='colors')
 
-# def clothing_create_view(request):
-#     if request.method == 'POST':
-#         clothing_form = ClothingForm(request.POST)
-#         print(clothing_form)
-#         # if all(form.is_valid() for form in [clothing_form, size_formset, colors_formset, images_formset]):
-#         #     clothing = clothing_form.save(commit=False)
-#         #     clothing.save()
+    return render(request, 'admin_local/create.html', {
+        'size_formset_count': size_formset.total_form_count,
+        'images_formset_count': images_formset.total_form_count,
+        'colors_formset_count': colors_formset.total_form_count,
+        'clothing_form': clothing_form,
+        'size_formset': size_formset,
+        'images_formset': images_formset,
+        'colors_formset': colors_formset,
+    })
 
-#         #     size_instances = size_formset.save(commit=False)
-#         #     for instance in size_instances:
-#         #         instance.clothing = clothing
-#         #         instance.save()
 
-#         #     colors_instances = colors_formset.save(commit=False)
-#         #     for instance in colors_instances:
-#         #         instance.clothing = clothing
-#         #         instance.save()
+def update_clothing(request, pk):
+    clothing = get_object_or_404(Clothing, pk=pk)
+    if request.method == 'POST':
+        clothing_form = ClothingForm(request.POST, instance=clothing)
+        size_formset = ClothingSizeFormSet(request.POST, instance=clothing, prefix='size')
+        images_formset = ClothingImagesFormSet(request.POST, request.FILES, instance=clothing, prefix='images')
+        colors_formset = ClothingColorsFormSet(request.POST, instance=clothing, prefix='colors')
 
-#         #     images_instances = images_formset.save(commit=False)
-#         #     for instance in images_instances:
-#         #         instance.clothing = clothing
-#         #         instance.save()
+        if clothing_form.is_valid() and size_formset.is_valid() and images_formset.is_valid() and colors_formset.is_valid():
+            clothing = clothing_form.save()
 
-#         #     # Redirect or perform any other action after successful form submission
-#         #     return redirect('success_page')
-#     else:
-#         clothing_form = ClothingForm()
+            size_formset.save()
+            images_formset.save()
+            colors_formset.save()
 
-#     return render(request, 'admin_local/input.html', {
-#         'clothing_form': clothing_form,
-#     })
+            return redirect('clothing_detail', pk=clothing.pk)
+    else:
+        clothing_form = ClothingForm(instance=clothing)
+        size_formset = ClothingSizeFormSet(instance=clothing, prefix='size')
+        images_formset = ClothingImagesFormSet(instance=clothing, prefix='images')
+        colors_formset = ClothingColorsFormSet(instance=clothing, prefix='colors')
+
+    return render(request, 'admin_local/update.html', {
+        'clothing_form': clothing_form,
+        'size_formset': size_formset,
+        'images_formset': images_formset,
+        'colors_formset': colors_formset,
+    })
+
+def delete_clothing(request, pk):
+    clothing = get_object_or_404(Clothing, pk=pk)
+    if request.method == 'POST':
+        clothing.delete()
+        return redirect('clothing_list')
+    
+    return render(request, 'admin_local/delete.html', {'clothing': clothing})

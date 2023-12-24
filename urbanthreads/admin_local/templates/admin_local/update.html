@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Clothing</title>
+</head>
+<body>
+    <h1>Update Clothing</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ clothing_form.as_p }}
+        {{ size_formset.management_form }}
+        {{ size_formset.as_p }}
+        {{ images_formset.management_form }}
+        {{ images_formset.as_p }}
+        {{ colors_formset.management_form }}
+        {{ colors_formset.as_p }}
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

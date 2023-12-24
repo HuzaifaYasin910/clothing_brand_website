@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Clothing</title>
+</head>
+<body>
+    <h1>Delete Clothing</h1>
+    <p>Are you sure you want to delete {{ clothing.product_name }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm Delete</button>
+    </form>
+</body>
+</html>

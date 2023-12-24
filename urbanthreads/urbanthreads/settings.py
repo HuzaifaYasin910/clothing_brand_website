@@ -39,7 +39,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
         'whitenoise.runserver_nostatic',
-        #'accounts.apps.AccountsConfig',
+        'accounts.apps.AccountsConfig',
         'admin_local.apps.AdminLocalConfig',
         'store.apps.StoreConfig',
         'django.contrib.admin',
@@ -87,14 +87,10 @@ WSGI_APPLICATION = 'urbanthreads.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-	'default':{
-		'ENGINE': 'django.db.backends.mysql',
-		'NAME'  : config_data.get('DATABEASE_NAME'),
-		'HOST'  : config_data.get('DATABEASE_HOST'),
-        'USER'  : config_data.get('DATABEASE_USER'),
-		'PASSWORD': config_data.get('DATABEASE_PASSWORD'),
-		'PORT'  : '3306',
-	},	
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 

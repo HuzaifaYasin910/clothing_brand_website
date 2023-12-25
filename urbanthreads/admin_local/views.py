@@ -81,6 +81,7 @@ def create_clothing(request):
     })
 
 
+
 def update_clothing(request, pk):
     clothing = get_object_or_404(Clothing, pk=pk)
     if request.method == 'POST':

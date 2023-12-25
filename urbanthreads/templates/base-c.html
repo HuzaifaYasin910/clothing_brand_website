@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>URBAN THREADS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/StaticUser123/UT@main/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alatsi&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alegreya+Sans&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Antonio&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo+Black&amp;display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/StaticUser123/UT@main/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/StaticUser123/UT@main/assets/css/Footer-Basic.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/StaticUser123/UT@main/assets/css/vanilla-zoom.min.css">
+</head>
+<style>.ctg{color: aliceblue;font-size: 25px;width: 100%;border-radius: 5px;border: none;margin-bottom: 30px;padding: 20px;} .review-item {word-wrap: break-word;overflow: hidden;}a{text-decoration: none;}::-webkit-scrollbar {width: 5px;background-color: rgba(0, 0, 0, 0.014);}::-webkit-scrollbar-thumb { background-color: rgba(53, 53, 53, 0.534);}</style>
+<body style="height: auto;">
+    <nav class="navbar navbar-light navbar-expand-md" style="background: var(--bs-white);">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse order-2" id="navcol-1">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="offcanvas" href="#offcanvas-1" style="color: var(--bs-gray-900);font-weight: bold;">Catagories</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'accounts:user_profile' %}" style="color: var(--bs-gray-900);font-weight: bold;">account</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'accounts:login' %}" style="color: var(--bs-gray-900);font-weight: bold;">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <ul class="navbar-nav text-nowrap d-flex flex-row order-1 order-md-2 mx-md-auto">
+                <li class="nav-item"><a class="navbar-brand" href="{% url 'store:home' %}" style="color: var(--bs-yellow);font-weight: bold;font-size: 35px;font-family: Antonio, sans-serif;">URBAN THREADS</a></li><button data-bs-target="#navcol-1" data-bs-toggle="collapse" class="navbar-toggler" style="width: 122px;"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            </ul>
+            <div class="order-3 ms-auto order-md-3 navbar-collapse collapse nav-content">
+            </div>
+        </div>
+    </nav>
+    
+    {% block content %}
+    {% endblock %}
+<footer class="d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center footer-basic" style="height: 400px;background: rgb(0,0,0);">
+<div style="width: 90%;">
+<ul class="list-inline">
+<li class="list-inline-item"><a href="{% url 'store:home' %}" style="color: var(--bs-orange);font-weight: bold;">Home</a></li>
+<li class="list-inline-item"><a href="{% url 'accounts:login' %}" style="color: var(--bs-cyan);font-weight: bold;">Login</a></li>
+<li class="list-inline-item"><a data-bs-toggle="offcanvas" href="#offcanvasCookies" style="color: var(--bs-gray-100);font-weight: bold;">cookies</a></li>
+</ul>
+<p class="copyright" style="padding-top: 5px;padding-bottom: 5px;background: rgba(107,184,255,0);color: var(--bs-white);font-weight: bold;border-top: 1px solid var(--bs-gray-600);"><br><strong>&nbsp;© 2023&nbsp;</strong>URBAN THREADS STORES</p>
+</div>
+</footer>
+<!-- off canvas ===========================================================================-->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-1">
+  <div class="offcanvas-header">
+      <h5 class="offcanvas-title" style="color: var(--bs-yellow);font-family: Antonio, sans-serif;">URBAN THREADS</h5><button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+      <div>
+          <ul class="nav nav-tabs" role="tablist" style="border-width: 0px;">
+              <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-1" style="font-weight: bold;color: var(--bs-gray-900);border-style: none;">MEN</a></li>
+              <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-2" style="font-weight: bold;color: var(--bs-gray-900);border-width: 0px;border-style: none;">WOMEN</a></li>
+              <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-3" style="font-weight: bold;color: var(--bs-gray-900);border-style: none;">MINORS</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane" role="tabpanel" id="tab-1">
+                  <p style="padding-top: 15px;font-weight: bold;">Collection (MEN)</p>
+                  <div style="padding-left: 10px;"><a href="{% url 'store:collection' 'M' 'PANTS' %}">
+                          <p style="color: var(--bs-gray-700);font-weight: bold;">PANTS<br></p>
+                      </a><a href="{% url 'store:collection' 'M' 'SHORTS' %}">
+                          <p style="color: var(--bs-gray-700);font-weight: bold;">SHORTS<br></p>
+                      </a><a href="{% url 'store:collection' 'M' 'TSHIRTS' %}">
+                          <p style="color: var(--bs-gray-700);font-weight: bold;">T-SHIRTS<br></p>
+                      </a><a href="{% url 'store:collection' 'M' 'SHIRTS' %}">
+                          <p style="color: var(--bs-gray-700);font-weight: bold;">SHIRTS<br></p>
+                      </a><a href="{% url 'store:collection' 'M' 'TROUSERS' %}">
+                          <p style="font-weight: bold;color: var(--bs-gray-700);">TROUSERS<br></p>
+                      </a><a href="{% url 'store:collection' 'M' 'SHOES' %}">
+                          <p style="font-weight: bold;color: var(--bs-gray-700);">SHOES<br></p>
+                      </a></div>
+              </div>
+              <div class="tab-pane active" role="tabpanel" id="tab-2">
+                  <p style="padding-top: 15px;font-weight: bold;">Collection (WOMEN)</p>
+                  <div style="padding-left: 10px;"><a href="{% url 'store:collection' 'W' 'PANTS' %}">
+                    <p style="color: var(--bs-gray-700);font-weight: bold;">PANTS<br></p>
+                </a><a href="{% url 'store:collection' 'W' 'TSHIRTS' %}">
+                    <p style="color: var(--bs-gray-700);font-weight: bold;">T-SHIRTS<br></p>
+                </a><a href="{% url 'store:collection' 'W' 'SHIRTS' %}">
+                    <p style="color: var(--bs-gray-700);font-weight: bold;">SHIRTS<br></p>
+                </a><a href="{% url 'store:collection' 'W' 'TROUSERS' %}">
+                    <p style="font-weight: bold;color: var(--bs-gray-700);">TROUSERS<br></p>
+                </a><a href="{% url 'store:collection' 'W' 'SHOES'  %}">
+                    <p style="font-weight: bold;color: var(--bs-gray-700);">SHOES<br></p>
+                </a></div>
+              </div>
+              <div class="tab-pane" role="tabpanel" id="tab-3">
+                  <p style="padding-top: 15px;font-weight: bold;">Catagory</p>
+                  <div style="padding-left: 10px;"><a href="{% url 'store:products' 'B' %}">
+                          <p style="font-weight: bold;color: var(--bs-yellow);">BOYS<br></p>
+                      </a><a href="{% url 'store:products' 'G' %}">
+                          <p style="font-weight: bold;color: var(--bs-pink);">GIRLS<br></p>
+                      </a></div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- off canvas (COOKIES) ===========================================================================-->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCookies" aria-labelledby="offcanvasCookiesLabel" style="background-color: black;color: azure;"><div class="offcanvas-header">
+<h3 class="offcanvas-title" id="offcanvasCookiesLabel" ><span style="font-size: larger;">Cookies</span></h3>
+<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color: aliceblue;"></button>
+</div>
+<div class="offcanvas-body">
+<div>
+        When you visit any website, it may store or retrieve information on your browser, mostly in the form of cookies. This information might be about you, your preferences or your device and is mostly used to make the site work as you expect it to. The information does not usually directly identify you, but it can give you a more personalized web experience.We respect your right to privacy. However, blocking some types of cookies may impact your experience of the site and the services we are able to offer.
+</div></div></div>
+<!-- end off canvas ===========================================================================-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/gh/StaticUser123/UT@main/assets/bootstrap/js/bootstrap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script><script src="https://cdn.jsdelivr.net/gh/StaticUser123/UT@main/assets/js/vanilla-zoom.js"></script><script src="https://cdn.jsdelivr.net/gh/StaticUser123/UT@main/assets/js/theme.js"></script>
+</body>
+</html>

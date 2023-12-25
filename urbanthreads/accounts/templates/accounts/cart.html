@@ -10,41 +10,77 @@
                                     <td>PRODUCT</td>
                                     <td>QUANTITY</td>
                                     <td class="text-end">TOTAL</td>
-                                </tr>
+                                {% if guest %}
+
                                 {% for cart_product in cart_products %}        
                                 <tr id="start-from-here">
                                     <td class="border-0" colspan="3">
                                         <div class="row w-100">
                                             <div class="col-md-4">
-                                                <!-- Start: 1 Row 2 Columns -->
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class="col-md-6 d-flex justify-content-center"><img class="w-auto" src="{{ cart_product.product.product_images.first.image.url}}" style="height: 198.4px;"></div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-6 d-flex justify-content-center"><img class="w-auto" src="{{ cart_product.product_images.first.image.url}}" style="height: 198.4px;"></div>
                                                         <div class="col-md-6 py-4">
-                                                            <h6 class="fw-bold m-0">{{ cart_product.product.product_name }}</h6>
-                                                            <span><br>
-                                                                <span style="color: rgba(0, 0, 0, 0.75);">PKR {{ cart_product.product.product_price }}</span><br>
-                                                                <span style="color: rgba(0, 0, 0, 0.75);">Color:--- REQUIRED ---<br>
-                                                                <span style="color: rgba(0, 0, 0, 0.75);">Size:&nbsp;L</span><br>
-                                                                <span style="color: rgba(0, 0, 0, 0.75);">Gender: {{ cart_product.product.product_category }}</span><br>
-                                                            </span>
+                                                        <h6 class="fw-bold m-0">{{ cart_product.product_name }}</h6>
+                                                        <span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">PKR {{ cart_product.product_price }}</span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">Color:--- REQUIRED ---</span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">Size: </span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">Gender: {{ cart_product.product_category }}</span><br>
+                                                        </span>
                                                         </div>
                                                     </div>
-                                                </div><!-- End: 1 Row 2 Columns -->
-                                            </div>
-                                            
+                                                </div>
                                             <div class="col-md-4">
-                                                <h6 class="fw-bold m-0"></h6><span><br><span style="color: rgba(0, 0, 0, 0.75);">PKR 4,490</span><br><span style="color: rgba(0, 0, 0, 0.75);">Color:&nbsp;Anthracite&nbsp;Grey</span><br><span style="color: rgba(0, 0, 0, 0.75);">Size:&nbsp;L</span><br><span style="color: rgba(0, 0, 0, 0.75);">Gender: M</span><br></span>
-
+                                                <h6 class="fw-bold m-0"></h6>
+                                                <span><br><span style="color: rgba(0, 0, 0, 0.75);">QTY : {{ cart_product.quantity }}</span><br>
                                                 <input type="number"><a class="mx-5" href="#"><i class="far fa-trash-alt fs-3"></i></a>
                                             </div>
                                             <div class="col-md-4">
-                                                <h6 class="text-end fw-bold mt-3">PKR 2,03</h6>
+                                                <h6 class="text-end fw-bold mt-3">PKR {{total_price}}</h6>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
+
+                                {% else %}
+
+                                {% for cart_product in cart_products %}        
+                                <tr id="start-from-here">
+                                    <td class="border-0" colspan="3">
+                                        <div class="row w-100">
+                                            <div class="col-md-4">
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-6 d-flex justify-content-center"><img class="w-auto" src="{{ cart_product.product.product_images.first.image.url}}" style="height: 198.4px;"></div>
+                                                        <div class="col-md-6 py-4">
+                                                        <h6 class="fw-bold m-0">{{ cart_product.product.product_name }}</h6>
+                                                        <span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">PKR {{ cart_product.product.product_price }}</span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">Color:--- REQUIRED ---</span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">Size: </span><br>
+                                                        <span style="color: rgba(0, 0, 0, 0.75);">Gender: {{ cart_product.product.product_category }}</span><br>
+                                                        </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                            <div class="col-md-4">
+                                                <h6 class="fw-bold m-0"></h6>
+                                                <span><br><span style="color: rgba(0, 0, 0, 0.75);">QTY : {{ cart_product.quantity }}</span><br>
+                                                <input type="number"><a class="mx-5" href="#"><i class="far fa-trash-alt fs-3"></i></a>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h6 class="text-end fw-bold mt-3">PKR {{total_price}}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                {% endif%}
+
                         </table>
                     </div>
                 </div>

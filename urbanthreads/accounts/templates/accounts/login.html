@@ -1,66 +1,23 @@
-
-
-
-
-{% extends "base.html"%} {% block content %}
-
-<main class="page login-page">
-  <section class="clean-block clean-form dark">
-    <div class="container">
-      <div class="block-heading">
-        {% if messages %} {% for message in messages %}
-        <div class="alert alert-info">{{ message }}</div>
-        {% endfor %} {% endif %}
-        <h1 style="font-family: Alatsi, sans-serif; color: rgb(1, 70, 139)">
-          LOGIN
-        </h1>
-      </div>
-      <form method="post" action="{% url 'accounts:login' %}">
-        {% csrf_token %}
-        <div class="mb-3">
-          <label class="form-label" for="username">Username</label>
-          <input
-            class="form-control item"
-            type="text"
-            id="username"
-            name="username"
-            style="box-shadow: none"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="password">Password</label>
-          <input
-            class="form-control"
-            type="password"
-            id="password"
-            name="password"
-            style="box-shadow: none"
-          />
-        </div>
-
-        <button
-          class="btn btn-primary"
-          type="submit"
-          style="
-            width: 100%;
-            background: rgb(253, 186, 13);
-            border-width: 0px;
-            box-shadow: none;
-          "
-        >
-          Log In
-        </button>
-
-        <p class="text-center" style="margin-top: 5px">
-          <br />Dont have an account&nbsp;<br />
-          <a href="{% url 'accounts:signup' %}" style="font-weight: bold"
-            >Sign up</a
-          ><br />
-        </p>
-      </form>
-    </div>
-  </section>
-</main>
-
+{% extends "base.html"%} 
+{% block content %}
+        <section class="clean-block clean-form vh-75 pt-5">
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+            {% endfor %} {% endif %}
+            <div class="container py-4">
+                <h1 class="text-black-50 mt-5">Login</h1>
+                <form class="my-0" action="{% url 'accounts:login' %}">
+                    {% csrf_token %}
+                    <input class="form-control my-2" type="text" id="username" placeholder="Username" name="username" required="">
+                    <input class="form-control my-3" type="password" id="password" placeholder="Password" name="password" required="">
+                    <a href="#">
+                        <p style="font-family: 'Roboto Condensed', sans-serif;">Forget Password?</p>
+                    </a>
+                    <button class="btn btn-primary my-2" type="submit" style="width: 100%;border-width: 0px;box-shadow: none;">Log In</button>
+                    <a href="#">
+                        <p style="font-family: 'Roboto Condensed', sans-serif;"><a href="#"><strong><span style="color: initial;">Create an account</span></strong></a><br></p>
+                    </a>
+                </form>
+            </div>
+        </section>
 {% endblock %}

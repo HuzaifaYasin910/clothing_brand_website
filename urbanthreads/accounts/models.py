@@ -50,17 +50,18 @@ class Address(BaseModel):
     
 
 
-class CartProduct(BaseModel):
-    refering_cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
-    product = models.ForeignKey(Clothing, on_delete=models.CASCADE ,related_name='product')
+class CartProduct(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Clothing, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='cart_products')
 
     def __str__(self):
-        return f"{self.quantity}"
+        return f"{self.user} - {self.product}"
 
-class Cart(BaseModel):
-    cart_products   = models.ManyToManyField(CartProduct)
-    user            = models.ForeignKey(User, on_delete=models.CASCADE)
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Other fields for Cart if needed
 
     def __str__(self):
-        return f"{self.user} , {self.cart_products.all()}"
+        return f"{self.user}'s cart"

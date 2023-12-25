@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -6,6 +7,7 @@ from django.contrib.auth import logout
 from .forms import *
 from .models import *
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
 from store.models import *
 from django.db import transaction
 import uuid
@@ -16,6 +18,7 @@ def login_view(request):
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            messages.error(request, 'Invalid username or password.')
             auth_login(request, user) 
             return redirect('accounts:user_profile')  
         else:
@@ -47,7 +50,7 @@ def create_user_account(request):
 def user_profile(request):
    
     if request.user.is_authenticated:
-       
+        print(request.session)
         username = request.user.username
         email = request.user.email
         is_authenticated = True
@@ -96,14 +99,6 @@ def checkout(request, product_pk, product_category, product_name ):
         messages.error(request, 'You have to log in first to make orders.')
         return redirect('accounts:login')
 
-def cart(request,product_pk,product_catagory,product_name):
-    if request.user.is_authenticated:
-        user        = request.user
-        new_object = Cart.objects.create(name=product_name,pk_product=product_pk, product_catagory=product_catagory,user=user)
-        return redirect('accounts:user_profile')
-    else:
-        messages.success(request, 'You have to login first to make orders/add to cart.')
-        return redirect('accounts:login')
 
 
 
@@ -112,25 +107,57 @@ def delete_cart_item(request,cart_pk):
     required_object.delete()
     return redirect('accounts:user_profile')
 
-
 def add_address(request):
     return render(request,'accounts/add-address.html')
 
 def cart(request):
-    user = request.user  # Get the current logged-in user
-    cart = Cart.objects.get(user=user)
-    cart_products = cart.cart_products.all()
-    return render(request,'accounts/cart.html',{'cart_products': cart_products})
+    cart_products = []
+    total_price = 0
+
+    if request.user.is_authenticated:
+        # If the user is logged in, fetch cart products from the database
+        cart = Cart.objects.filter(user=request.user).first()
+        if cart:
+            cart_products = cart.cart_products.all()
+            total_price = sum(product.product.product_price * product.quantity for product in cart_products)
+            guest = False
+    else:
+        # If the user is not logged in, fetch cart products from the session
+        cart = request.session.get('cart', {})
+        product_ids = cart.keys()
+        cart_products = Clothing.objects.filter(pk__in=product_ids)
+        total_price = sum(product.product_price * cart[str(product.pk)] for product in cart_products)
+        guest=True
+    return render(request, 'accounts/cart.html', {'cart_products': cart_products, 'total_price': total_price,'guest':guest})
 
 
 
-def add_to_cart(request, product_pk):
-    clothing = get_object_or_404(Clothing, pk=product_pk)
-    user = request.user 
-    cart, created = Cart.objects.get_or_create(user=user)
-    cart_product, created = CartProduct.objects.get_or_create(refering_cart=cart, product=clothing)
-    if not created:
-        cart_product.quantity += 1
-        cart_product.save()
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Clothing, pk=product_id)
 
-    return redirect('store:home')  
+    if request.user.is_authenticated:
+        # If the user is logged in, add the product to their cart
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_product, cp_created = CartProduct.objects.get_or_create(
+            cart=cart,
+            user=request.user,
+            product=product,
+            defaults={'quantity': 1}
+        )
+        if not cp_created:
+            cart_product.quantity += 1
+            cart_product.save()
+    else:
+        # If the user is not logged in, store the cart in the session
+        cart = request.session.get('cart', {})
+        cart_product_quantity = cart.get(str(product_id), 0)
+        cart[str(product_id)] = cart_product_quantity + 1
+        request.session['cart'] = cart
+
+    return redirect('store:home')
+
+@login_required
+def remove_from_cart(request, cart_product_id):
+    cart_product = get_object_or_404(CartProduct, pk=cart_product_id)
+    cart_product.delete()
+    return redirect('accounts:cart')

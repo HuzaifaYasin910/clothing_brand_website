@@ -1,8 +1,8 @@
-{% extends "base.html"%} {% block content %} {% if is_authenticated %}
+{% extends "base.html"%} {% block content %}
         <section class="clean-block clean-cart dark pt-5">
             <div class="container roboto h-auto pt-5">
                 <h1 class="fw-bold">Accout</h1>
-                <h5 class="text-start text-start"><a href="#"><br><i class="far fa-user"></i><span style="color: rgb(0, 0, 0);">&nbsp;LOGOUT</span><br></a><br><br></h5>
+                <h5 class="text-start text-start"><a href="{% url 'accounts:logout' %}"><br><i class="far fa-user"></i><span style="color: rgb(0, 0, 0);">&nbsp;LOGOUT</span><br></a><br><br></h5>
                 <div>
                     <div class="row g-0">
                         <div class="col-md-12 col-lg-8">
@@ -35,5 +35,4 @@
                     </div>
                 </div>
             </div>
-        </section>
-        {% endif %} {% endblock %}
+        </section> {% endblock %}

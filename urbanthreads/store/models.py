@@ -70,7 +70,7 @@ class ClothingSize(models.Model):
     quantity        = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
 
     def __str__(self):
-        return f'{self.quantity} X of {self.clothing.product_name} in {self.size} Size'
+        return self.size
 
 class ClothingColors(BaseModel):
     clothing        = models.ForeignKey(Clothing, on_delete=models.CASCADE,related_name='clothing_color',default=1)

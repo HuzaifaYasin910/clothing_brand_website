@@ -1,203 +1,57 @@
 {% extends 'base.html' %} {% block content %}
-<!-- product page -->
-<main class="page product-page" style="background: rgb(255, 255, 255)">
-  <section
-    class="clean-block clean-product dark"
-    style="background: rgb(255, 255, 255); border: none; box-shadow: none"
-  >
-    <div class="container">
-      <div class="block-content" style="border: none; box-shadow: none">
-        <div class="product-info">
-          <div class="row">
-            <div class="col-md-6" style="height: 888px">
-              <div class="gallery" style="height: 885px">
-                <div id="product-preview" class="vanilla-zoom">
-                  <div class="zoomed-image" style="height: 700px"></div>
-                  <div class="sidebar">
-                    {% for image in product.product_images.all %}
-                    <img
-                      class="img-fluid d-block small-preview"
-                      src="{{ image.image.url }}"
-                      onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"
-                    />
-                   {% endfor %}
-                  </div>
+        <section class="clean-block clean-product dark pt-5">
+            <div class="container pt-5">
+                <div class="block-content">
+                    <div class="product-info">
+                        <div class="row">
+                            <div class="col-md-6 p-0" style="height: 888px;">
+                                <div class="gallery d-eir-994-323">
+                                    <div id="product-preview" class="vanilla-zoom">
+                                        <div class="zoomed-image px-700"></div>
+                                        <div class="sidebar">
+                                          {% for image in product.product_images.all %}
+                                          <img class="img-fluid d-block small-preview" src="{{ image.image.url }}"onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"/>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-0">
+                                <div class="info">
+                                    <h4 style="font-family: Alatsi, sans-serif;">{{product.product_name}}</h4><span>{{product.product_article}}</span>
+                                    <h6 class="prc-prod">PKR {{product.product_price}}</h6>
+                                    <hr>
+                                    <div class="d-inline-flex w-100">
+                                        <p class="size-symbol w-25"><strong>COLORS</strong><br></p>
+                                        {% for color in product.clothing_color.all %}
+                                        <div class="color-p-circle" style="background-color:{{color}};"></div>
+                                        {% empty %}
+                                          No colors.
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-inline-flex w-100">
+                                        <h6 class="w-25 size-symbol">SIZE</h6>
+                                        {% for size in product.clothing_size.all %}
+                                         <h6 class="size-symbol mx-1">{{size}}</h6>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-inline-flex w-100">
+                                        <h6 class="w-25 size-symbol">GENDER</h6>
+                                        <h6 class="size-symbol mx-1">{{product.product_category}}</h6>
+                                    </div>
+                                    <div>
+                                        <hr>
+                                        <p class="size-symbol">SIZE GUIDE</p>
+                                        <form><a href="{% url 'accounts:add_to_cart' product.pk %}" class="btn btn-primary add-to-cart-btn" role="button" style="width: 100%;font-size: .8em;">ADD TO CART</a></form>
+                                    </div>
+                                    <div class="summary">
+                                        <p><br><strong>COMPOSITION &amp; CARE</strong><br>MACHINE WASH UP TO 30C/86F, GENTLE CYCLE<br>DO NOT BLEACH<br>IRON UP TO 110C/230F<br>DO NOT IRON DIRECTLY ON PRINTS/EMBROIDERY/EMBELLISHMENTS/LI&gt;<br>DO NOT DRY CLEAN<br>DO NOT TUMBLE DRY<br><br></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="col-md-6">
-              <div class="info">
-                <h3 style="font-family: Alatsi, sans-serif">
-                  {{product.product_name}}
-                </h3>
-                <h5 style="font-family: Alatsi, sans-serif">
-                  $ {{product.price}}
-                  {% for colors in product.clothing_color.color %}
-                  {{colors}}
-                  {% endfor %}
-                </h5>
-                {% for colors in product.clothing_color.color %}
-                  {{colors}}
-                  {% endfor %}
-                <div class="price" style="border-top-style: solid">
-                    <button
-                      class="btn"
-                      type="button"
-                      style="border: black solid 1px; width: 100%"
-                    >
-                      Add To Cart
-                    </button>
-                  </a>
-                    <button
-                      class="btn btn-primary"
-                      type="button"
-                      style="border-width: 0px; background: black; width: 100%"
-                    >
-                      Order now
-                    </button>
-                  </a>
-                </div>
-                <div
-                  class="summary"
-                  style="
-                    padding-top: 9px;
-                    border-top: 2px solid var(--bs-gray-600);
-                  "
-                >
-                  <h4 style="font-family: Alatsi, sans-serif">Article</h4>
-                  <p style="font-family: Alatsi, sans-serif">
-                    {{product.article}}
-                  </p>
-                  <p
-                    style="
-                      font-family: Alatsi, sans-serif;
-                      border-top: 2px solid var(--bs-gray-600);
-                    "
-                  >
-                    <br /><strong>COMPOSITION &amp; CARE</strong><br />MACHINE
-                    WASH UP TO 30C/86F, GENTLE CYCLE<br />DO NOT BLEACH<br />IRON
-                    UP TO 110C/230F<br />DO NOT IRON DIRECTLY ON
-                    PRINTS/EMBROIDERY/EMBELLISHMENTS/LI&gt;<br />DO NOT DRY
-                    CLEAN<br />DO NOT TUMBLE DRY<br /><br />
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="product-info">
-          <div>
-            <ul class="nav nav-tabs" role="tablist" id="myTab">
-              <li class="nav-item" role="presentation">
-                <a
-                  class="nav-link active"
-                  role="tab"
-                  data-bs-toggle="tab"
-                  id="specifications-tabs"
-                  href="#specifications"
-                  >Specifications</a
-                >
-              </li>
-              <li class="nav-item" role="presentation">
-                <a
-                  class="nav-link"
-                  role="tab"
-                  data-bs-toggle="tab"
-                  id="reviews-tab"
-                  href="#reviews"
-                  >Reviews</a
-                >
-              </li>
-            </ul>
-
-            <div class="tab-content" id="myTabContent">
-              <div
-                class="tab-pane fade show active specifications"
-                role="tabpanel"
-                id="specifications"
-              >
-                <div class="table-responsive">
-                  <table class="table table-bordered">
-                    <tbody>
-                      <tr>
-                        <td class="stat">Sizes</td>
-
-                        <td>
-                          {% for size in product.size.all %}{{ size.name }}
-                          &nbsp;&nbsp;&nbsp;{% endfor %}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="stat">Color</td>
-                        <td>{{product.color}}</td>
-                      </tr>
-                      <tr>
-                        <td class="stat">QTY</td>
-                        <td>{{product.qty}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="tab-pane fade" role="tabpanel" id="reviews">
-                <div class="reviews">
-                  <div class="review-item">
-                    {% for comment in comments %}
-                    <h4>{{ comment.user }}</h4>
-                    {{ comment.created_at }}
-                    <p>{{ comment.text }}</p>
-                    {% empty %}
-                    <p>no review yet.</p>
-                    {% endfor %}
-                  </div>
-                </div>
-                {% if request.user.is_authenticated %}
-                <div class="reviews">
-                  <div class="review-item">
-                    <h3>Add Your Reviews:</h3>
-                    <form
-                      method="post"
-                      style="
-                        display: flex;
-                        background-color: rgb(231, 231, 231);
-                      "
-                    >
-                      {% csrf_token %}
-                      <textarea
-                        style="
-                          height: 50px;
-                          width: 90%;
-                          border: 0;
-                          background-color: rgba(240, 248, 255, 0);
-                        "
-                        name="text"
-                        cols="40"
-                        rows="10"
-                        required
-                      ></textarea>
-                      <button
-                        class="btn btn-primary"
-                        type="submit"
-                        style="
-                          color: var(--bs-gray-900);
-                          background: rgba(255, 255, 255, 0);
-                          border-width: 0px;
-                          box-shadow: none;
-                          width: 10%;
-                        "
-                      >
-                        <i class="fa fa-arrow-right"></i>
-                      </button>
-                    </form>
-                  </div>
-                </div>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+        </section>
 {% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html"%} {% block content %}
+        <section class="clean-cart dark pt-5">
+            <div class="container mt-5">
+                <div class="col pt-5">
+                    <h3 class="fw-bold">SHOPPING CART</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>PRODUCT</td>
+                                    <td>QUANTITY</td>
+                                    <td class="text-end">TOTAL</td>
+                                </tr>
+                                {% for cart_product in cart_products %}        
+                                <tr id="start-from-here">
+                                    <td class="border-0" colspan="3">
+                                        <div class="row w-100">
+                                            <div class="col-md-4">
+                                                <!-- Start: 1 Row 2 Columns -->
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-6 d-flex justify-content-center"><img class="w-auto" src="{{ cart_product.product.product_images.first.image.url}}" style="height: 198.4px;"></div>
+                                                        <div class="col-md-6 py-4">
+                                                            <h6 class="fw-bold m-0">{{ cart_product.product.product_name }}</h6>
+                                                            <span><br>
+                                                                <span style="color: rgba(0, 0, 0, 0.75);">PKR {{ cart_product.product.product_price }}</span><br>
+                                                                <span style="color: rgba(0, 0, 0, 0.75);">Color:--- REQUIRED ---<br>
+                                                                <span style="color: rgba(0, 0, 0, 0.75);">Size:&nbsp;L</span><br>
+                                                                <span style="color: rgba(0, 0, 0, 0.75);">Gender: {{ cart_product.product.product_category }}</span><br>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- End: 1 Row 2 Columns -->
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <h6 class="fw-bold m-0"></h6><span><br><span style="color: rgba(0, 0, 0, 0.75);">PKR 4,490</span><br><span style="color: rgba(0, 0, 0, 0.75);">Color:&nbsp;Anthracite&nbsp;Grey</span><br><span style="color: rgba(0, 0, 0, 0.75);">Size:&nbsp;L</span><br><span style="color: rgba(0, 0, 0, 0.75);">Gender: M</span><br></span>
+
+                                                <input type="number"><a class="mx-5" href="#"><i class="far fa-trash-alt fs-3"></i></a>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h6 class="text-end fw-bold mt-3">PKR 2,03</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr class="hr-min">
+        </section>
+        <div class="container d-flex-j-end py-5">
+            <div class="chkot-m">
+                <h6 class="text-end fw-bold m-0">Subtotal : PKR 32,323</h6><span><br><br><span style="color: rgba(0, 0, 0, 0.75);">Taxes and shipping calculated at checkout</span><br></span>
+                <form><button class="btn btn-primary w-100 btn-p" type="button">CHECK OUT&nbsp;</button></form><a class="btn btn-primary white-btn w-100 mt-2 btn-p" role="button">CONTINUE SHOPPING</a>
+            </div>
+        </div>
+{% endblock %}

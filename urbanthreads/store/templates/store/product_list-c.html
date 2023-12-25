@@ -1,0 +1,53 @@
+{% extends 'base.html' %} {% block content %} {% if products %}
+<!-- product list -->
+<section class="clean-block clean-services light">
+  
+  <div class="container">
+    <div style="height: 100px"></div>
+    <div class="row">
+      {% for product in products %}
+      <div class="col-md-6 col-lg-4">
+        <a href="{% url 'store:product_detail' product.pk %}">
+          <div
+            class="card"
+            style="background: rgba(255, 255, 255, 0); border: 0"
+          >
+            <img
+              src="{{product.product_images.image.url }}"
+              onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"
+              class="card-img-top w-100 d-block"
+            />
+            <div
+              class="card-body"
+              style="color: var(--bs-gray-900); padding: 5px"
+            >
+              <p
+                class="text-start"
+                style="color: var(--bs-gray-900); margin-bottom: 0px"
+              >
+                {{ product.product_name }}
+              </p>
+              <p class="text-start" style="color: var(--bs-gray-900)">
+                $ {{ product.price }} 
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% else %}
+<div
+  style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+    height: 70vh;
+  "
+>
+  <h1>404</h1>
+</div>
+{% endif %} {% endblock %}

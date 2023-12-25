@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib import messages
@@ -25,7 +25,6 @@ def login_view(request):
 
 
 def create_user_account(request):
-  
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -112,3 +111,26 @@ def delete_cart_item(request,cart_pk):
     required_object = get_object_or_404(Cart, pk=cart_pk)
     required_object.delete()
     return redirect('accounts:user_profile')
+
+
+def add_address(request):
+    return render(request,'accounts/add-address.html')
+
+def cart(request):
+    user = request.user  # Get the current logged-in user
+    cart = Cart.objects.get(user=user)
+    cart_products = cart.cart_products.all()
+    return render(request,'accounts/cart.html',{'cart_products': cart_products})
+
+
+
+def add_to_cart(request, product_pk):
+    clothing = get_object_or_404(Clothing, pk=product_pk)
+    user = request.user 
+    cart, created = Cart.objects.get_or_create(user=user)
+    cart_product, created = CartProduct.objects.get_or_create(refering_cart=cart, product=clothing)
+    if not created:
+        cart_product.quantity += 1
+        cart_product.save()
+
+    return redirect('store:home')  

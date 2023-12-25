@@ -49,16 +49,18 @@ class Address(BaseModel):
         return f'{self.first_name} {self.last_name} from {self.city} , {self.country}'
     
 
+
 class CartProduct(BaseModel):
     refering_cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
-    product = models.ForeignKey(Clothing, on_delete=models.CASCADE)
+    product = models.ForeignKey(Clothing, on_delete=models.CASCADE ,related_name='product')
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"{self.quantity}"
 
-
-
 class Cart(BaseModel):
     cart_products   = models.ManyToManyField(CartProduct)
     user            = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} , {self.cart_products.all()}"

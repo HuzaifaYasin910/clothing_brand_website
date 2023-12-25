@@ -1,53 +1,60 @@
-{% extends 'base.html' %} {% block content %} {% if products %}
-<!-- product list -->
-<section class="clean-block clean-services light">
-  
-  <div class="container">
-    <div style="height: 100px"></div>
-    <div class="row">
-      {% for product in products %}
-      <div class="col-md-6 col-lg-4">
-        <a href="{% url 'store:product_detail' product.pk %}">
-          <div
-            class="card"
-            style="background: rgba(255, 255, 255, 0); border: 0"
-          >
-            <img
-              src="{{product.product_images.image.url }}"
-              onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"
-              class="card-img-top w-100 d-block"
-            />
-            <div
-              class="card-body"
-              style="color: var(--bs-gray-900); padding: 5px"
-            >
-              <p
-                class="text-start"
-                style="color: var(--bs-gray-900); margin-bottom: 0px"
-              >
-                {{ product.product_name }}
-              </p>
-              <p class="text-start" style="color: var(--bs-gray-900)">
-                $ {{ product.price }} 
-              </p>
-            </div>
-          </div>
-        </a>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% else %}
-<div
-  style="
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(255, 255, 255);
-    height: 70vh;
-  "
->
-  <h1>404</h1>
-</div>
-{% endif %} {% endblock %}
+{% extends 'base.html' %} {% block content %}
+        <section class="clean-block clean-services h-auto pt-5">
+          
+            <div class="container h-auto mt-5">
+
+                
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-6 col-xxl-6 p-2">
+                        <a class="prod-a-l" href="{% url 'store:product_detail' product.pk %}">
+                            <div class="card bg-transparent"><img class="card-img-top w-100 d-block" src="{{product.product_images.first.image.url}}">
+                                <div class="card-body p-1">
+                                    <p class="text-start mb-0">{{product.product_name}}</p>
+                                    <div class="d-flex">
+                                        <div class="w-50">
+                                            <p class="text-start">PKR {{product.product_price}}</p>
+                                        </div>
+                                        <div class="d-flex justify-content-end justify-content-xxl-end w-50">
+                                        {% for color in product.clothing_color.all %}
+                                        <div class="color-p-circle" style="background-color:{{color}};"></div>
+                                        {% empty %}
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    
+
+                </div>
+
+                <!-- row with one columns 
+                <div class="row d-xl-flex justify-content-xl-center">
+
+                    <div class="col-md-6 col-xxl-6 p-2">
+                        <a class="prod-a-l" href="#">
+                            <div class="card bg-transparent"><img class="card-img-top w-100 d-block" src="assets/img/scenery/of1.webp">
+                                <div class="card-body p-1">
+                                    <p class="text-start mb-0">PRODUCT NAME</p>
+                                    <div class="d-flex">
+                                        <div class="w-50">
+                                            <p class="text-start">$ 2.75</p>
+                                        </div>
+                                        <div class="d-flex justify-content-end justify-content-xxl-end w-50">
+                                            <div class="color-p-circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div> -->
+
+
+            </div><!-- End: 1 Row 2 Columns -->
+        </section>
+   {% endblock %}

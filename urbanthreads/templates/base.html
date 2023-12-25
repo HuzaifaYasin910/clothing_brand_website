@@ -29,6 +29,13 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse order-2" id="navcol-2">
                     <ul class="navbar-nav">
+                        
+                        <li class="nav-item mx-3"><a class="nav-link active" href="#offcanvas-1" style="color: var(--bs-gray-900);font-weight: bold;" data-bs-target="#navslide" data-bs-toggle="offcanvas">
+                            <svg width="30" class="new-svg-hamburger" height="12" viewBox="0 0 30 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line y1="1" x2="30" y2="1" stroke="black" stroke-width="2"></line>
+                            <line y1="11" x2="20" y2="11" stroke="black" stroke-width="2"></line>
+                            </svg></a>
+                        </li>
                         <li class="nav-item d-xxl-flex align-items-xxl-end mx-3">
                             <div class="nav-item dropdown"><a class="dropdown-toggle active fs-4" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="icon-handbag"></i></a>
                                 <div class="dropdown-menu cart-drop p-3">
@@ -41,15 +48,25 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h6 class="text-end fw-bold m-0 pt-2">Subtotal : PKR 32,323</h6><span><br><span style="color: rgb(0, 0, 0);">*ALL ORDERS MAY TAKE UPTO 7 WORKING DAYS TO BE DELIVERED TO YOUR DOORSTEP</span><br></span><a class="btn btn-primary w-100 btn-p" role="button">CHECK OUT&nbsp;</a><a class="btn btn-primary white-btn w-100 mt-2 btn-p" role="button">CONTINUE SHOPPING</a>
+                                        <h6 class="text-end fw-bold m-0 pt-2">Subtotal : PKR 32,323</h6>
+                                        <span><br><span style="color: rgb(0, 0, 0);">
+                                            *ALL ORDERS MAY TAKE UPTO 7 WORKING DAYS TO BE DELIVERED TO YOUR DOORSTEP</span><br>
+                                        </span>
+                                        <a class="btn btn-primary w-100 btn-p" role="button" href="{% url 'accounts:cart' %}">CHECK OUT&nbsp;</a>
+                                        <a class="btn btn-primary white-btn w-100 mt-2 btn-p" role="button">CONTINUE SHOPPING</a>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item mx-3"><a class="nav-link active" href="#offcanvas-1" style="color: var(--bs-gray-900);font-weight: bold;" data-bs-target="#navslide" data-bs-toggle="offcanvas">Login</a></li>
                     </ul>
                 </div>
-                <ul class="navbar-nav text-nowrap d-flex flex-row order-1 order-md-2 mx-md-auto"><button data-bs-target="#navslide" data-bs-toggle="offcanvas" class="navbar-toggler" style="width: 122px;"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <ul class="navbar-nav text-nowrap d-flex flex-row order-1 order-md-2 mx-md-auto">
+                    <button data-bs-target="#navslide" data-bs-toggle="offcanvas" class="navbar-toggler" style="width: 122px;">
+                        <span class="visually-hidden">Toggle navigation</span><svg width="30" class="new-svg-hamburger" height="12" viewBox="0 0 30 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line y1="1" x2="30" y2="1" stroke="black" stroke-width="2"></line>
+                            <line y1="11" x2="20" y2="11" stroke="black" stroke-width="2"></line>
+                            </svg>
+                    </button>
                     <li class="nav-item"><a class="navbar-brand" href="#">URBAN THREADS</a></li>
                 </ul>
                 <div class="order-3 ms-auto order-md-3 navbar-collapse collapse nav-content">
@@ -110,7 +127,7 @@
                                 </a></div>
                         </div>
                     </div>
-                </div><a class="btn btn-primary" role="button"><i class="far fa-user-circle"></i>Profile</a>
+                </div><a class="btn btn-primary" role="button" href="{% url 'accounts:user_profile' %}"><i class="far fa-user-circle"></i>Profile</a>
             </div>
         </div>
         {% block content %}

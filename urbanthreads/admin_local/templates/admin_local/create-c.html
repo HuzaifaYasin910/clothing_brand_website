@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Create Clothing</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <h1>Create Clothing</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ clothing_form.as_p }}
+        
+       
+            {{ size_formset.management_form }}
+            {{ size_formset.as_p }}
+        
+
+      
+            {{ images_formset.management_form }}
+            {{ images_formset.as_p }}
+    
+            {{ colors_formset.management_form }}
+            {{ colors_formset.as_p }}
+        <button type="button" id="add-color">Add Color</button>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <!-- Templates -->
+    <script id="size-template" type="text/template">
+        <tr>
+            <!-- Your size input fields -->
+            <td><input type="text" name="clothingsize_set-__prefix__-size"></td>
+            <td><input type="number" name="clothingsize_set-__prefix__-quantity"></td>
+            <!-- Add any other fields related to sizes -->
+        </tr>
+    </script>
+
+    <script id="image-template" type="text/template">
+        <div>
+            <!-- Your image input fields -->
+            <input type="file" name="clothingimages_set-__prefix__-image">
+            <!-- Add any other fields related to images -->
+        </div>
+    </script>
+
+    <script id="color-template" type="text/template">
+        <div>
+            <!-- Your color input fields -->
+            <input type="text" name="clothingcolors_set-__prefix__-color">
+            <!-- Add any other fields related to colors -->
+        </div>
+    </script>
+</body>
+</html>

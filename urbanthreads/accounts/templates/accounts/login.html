@@ -2,11 +2,11 @@
 {% block content %}
         <section class="clean-block clean-form vh-75 pt-5">
             {% if messages %} {% for message in messages %}
-            <div class="alert alert-info">{{ message }}</div>
+            <div class="alert alert-info mt-4">{{ message }}</div>
             {% endfor %} {% endif %}
             <div class="container py-4">
                 <h1 class="text-black-50 mt-5">Login</h1>
-                <form class="my-0" action="{% url 'accounts:login' %}">
+                <form class="my-0" action="{% url 'accounts:login' %}" method="post">
                     {% csrf_token %}
                     <input class="form-control my-2" type="text" id="username" placeholder="Username" name="username" required="">
                     <input class="form-control my-3" type="password" id="password" placeholder="Password" name="password" required="">

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html data-bs-theme="light">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>shopify</title>
+    <title>Urbanthreads</title>
+    <link rel="shortcut icon" href="https://miro.medium.com/v2/resize:fill:120:120/1*sHhtYhaCe2Uc3IU0IgKwIQ.png" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alatsi&amp;display=swap">
@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="{% static 'assets\css\styles.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets\fonts\fontawesome5-overrides.min.css' %}">
 </head>
-
 <body>
     <main class="page h-auto">
 
@@ -41,23 +40,34 @@
                                 <div class="dropdown-menu cart-drop p-3">
                                     <h6 class="fw-bold">SHOPPING CART</h6>
                                     <div class="outer-div">
-                                        <div id="start-from-here" class="inner-div p-1 flex"><img class="h-100 w-auto" src="">
-                                            <div class="p-1 w-100"><span>Product name<br>Product Type (Hoodie)<br>M - SIZE&nbsp;<br></span>
-                                                <h6 class="text-end fw-bold">PKR 2000</h6>
+                                        {% if guest %}
+                                        {% for cart_product in cart_products %}
+                                        <div id="start-from-here" class="inner-div p-1 flex">
+                                            <img class="h-100 w-auto" src="{{ cart_product.product_images.first.image.url}}">
+                                            <div class="p-1 w-100">
+                                                <span>{{ cart_product.product_name }}
+                                                    <br>{{ cart_product.product_clothing_type }}
+                                                    <br>{{product.product_category}} - SIZE
+                                                    <br>
+                                                </span>
+                                                <h6 class="text-end fw-bold">PKR {{ cart_product.product_price }}</h6>
                                             </div>
                                         </div>
+                                        {% endfor %}
+                                        {% endif %}
                                     </div>
                                     <div>
-                                        <h6 class="text-end fw-bold m-0 pt-2">Subtotal : PKR 32,323</h6>
+                                        <h6 class="text-end fw-bold m-0 pt-2">Subtotal : PKR {{total_price}}</h6>
                                         <span><br><span style="color: rgb(0, 0, 0);">
                                             *ALL ORDERS MAY TAKE UPTO 7 WORKING DAYS TO BE DELIVERED TO YOUR DOORSTEP</span><br>
                                         </span>
                                         <a class="btn btn-primary w-100 btn-p" role="button" href="{% url 'accounts:cart' %}">CHECK OUT&nbsp;</a>
-                                        <a class="btn btn-primary white-btn w-100 mt-2 btn-p" role="button">CONTINUE SHOPPING</a>
+                                        <a class="btn btn-primary white-btn w-100 mt-2 btn-p" href="#" role="button">CONTINUE SHOPPING</a>
                                     </div>
                                 </div>
                             </div>
                         </li>
+
                     </ul>
                 </div>
                 <ul class="navbar-nav text-nowrap d-flex flex-row order-1 order-md-2 mx-md-auto">
@@ -71,7 +81,8 @@
                 </ul>
                 <div class="order-3 ms-auto order-md-3 navbar-collapse collapse nav-content">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link active" href="about-us.html" style="color: var(--bs-gray-900);font-weight: bold;">ABOUT US</a></li>
+                        <li class="nav-item"><a class="nav-link mx-3" href="{% url 'accounts:login' %}" >Login</a></li>
+                        <li class="nav-item"><a class="nav-link  mx-3" href="about-us.html" >ABOUT US</a></li>
                     </ul>
                 </div>
             </div>

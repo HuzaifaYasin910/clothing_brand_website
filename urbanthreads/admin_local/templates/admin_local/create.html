@@ -1,103 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <title>Create Clothing</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // when user clicks add more btn of sizes
-            $('#add-size').click(function(ev) {
-                ev.preventDefault();
-                var count = $('#size-table tr').length - 1; // Excluding header row
-                var tmplMarkup = $('#size-template').html();
-                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-                $('#size-table').append(compiledTmpl);
+{% extends 'base.html' %} 
+{% block content %}
+    <section class="clean-block clean-form py-5 h-auto">
+        <div class="container">
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-info my-3">{{ message }}</div>
+            {% endfor %} {% endif %}
+            <div class="row">
+                <div class="col-md-6 py-4" id="img-preview">
+                    <img id="imagePreview" class="w-100 h-auto">
+                </div>
+                <div class="col-md-6">
+                    <form method="post" enctype="multipart/form-data">
+                        <h3 class="fw-bold">Add a new product</h3>
+                        {% csrf_token %}
+                        {{ clothing_form }}
+                        <hr>
+                        {{ size_formset.management_form }}
+                        {{ size_formset.as_p }}
+                        <hr>
+                        {{ images_formset.management_form }}
+                        {{ images_formset.as_p }}
+                        <hr>
+                        {{ colors_formset.management_form }}
+                        {{ colors_formset.as_p }}
+                        <button class="btn btn-primary mt-2 px-4" type="submit" >Add Product</button>
+                    </form>
 
-                // update form count
-                $('#id_clothingsize_set-TOTAL_FORMS').val(count + 1);
-            });
-
-            // when user clicks add more btn of images
-            $('#add-image').click(function(ev) {
-                ev.preventDefault();
-                var count = $('#image-container div').length;
-                var tmplMarkup = $('#image-template').html();
-                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-                $('#image-container').append(compiledTmpl);
-
-                // update form count
-                $('#id_clothingimages_set-TOTAL_FORMS').val(count + 1);
-            });
-
-            // when user clicks add more btn of colors
-            $('#add-color').click(function(ev) {
-                ev.preventDefault();
-                var count = $('#color-container div').length;
-                var tmplMarkup = $('#color-template').html();
-                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-                $('#color-container').append(compiledTmpl);
-
-                // update form count
-                $('#id_clothingcolors_set-TOTAL_FORMS').val(count + 1);
-            });
-        });
-    </script>
-</head>
-<body>
-    <h1>Create Clothing</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ clothing_form.as_p }}
-        
-        <h2>Sizes</h2>
-        <table id="size-table">
-            {{ size_formset.management_form }}
-            {{ size_formset.as_p }}
-        </table>
-        <button type="button" id="add-size">Add Size</button>
-
-        <h2>Images</h2>
-        <div id="image-container">
-            {{ images_formset.management_form }}
-            {{ images_formset.as_p }}
+                </div>
+            </div>
         </div>
-        <button type="button" id="add-image">Add Image</button>
-
-        <h2>Colors</h2>
-        <div id="color-container">
-            {{ colors_formset.management_form }}
-            {{ colors_formset.as_p }}
-        </div>
-        <button type="button" id="add-color">Add Color</button>
-
-        <button type="submit">Save</button>
-    </form>
-
-    <!-- Templates -->
-    <script id="size-template" type="text/template">
-        <tr>
-            <!-- Your size input fields -->
-            <td><input type="text" name="clothingsize_set-__prefix__-size"></td>
-            <td><input type="number" name="clothingsize_set-__prefix__-quantity"></td>
-            <!-- Add any other fields related to sizes -->
-        </tr>
-    </script>
-
-    <script id="image-template" type="text/template">
-        <div>
-            <!-- Your image input fields -->
-            <input type="file" name="clothingimages_set-__prefix__-image">
-            <!-- Add any other fields related to images -->
-        </div>
-    </script>
-
-    <script id="color-template" type="text/template">
-        <div>
-            <!-- Your color input fields -->
-            <input type="text" name="clothingcolors_set-__prefix__-color">
-            <!-- Add any other fields related to colors -->
-        </div>
-    </script>
-</body>
-</html>
+    </section>
+{% endblock %}

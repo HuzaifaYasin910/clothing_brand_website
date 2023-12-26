@@ -11,18 +11,27 @@ class ClothingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ClothingForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'form-control'})
+            self.fields[field].widget.attrs.update({'class': 'form-control my-4'})
     class Meta:
+    
         model = Clothing
         fields = ['product_name', 'product_price', 'product_article', 'product_category', 'product_clothing_type']
 
 class ClothingSizeForm(forms.ModelForm):
+    SIZES = (
+        ('', ''),
+        ('S', 'S'),
+        ('M', 'M'),
+        ('L', 'L'),
+        ('XL', 'XL')
+    )
+    size = forms.ChoiceField(choices=SIZES,widget=forms.Select(attrs={'class':'form-control my-4'}))
     class Meta:
         model = ClothingSize
         fields = ['size','quantity']
+        
         widgets = {
-            'size': forms.TextInput(attrs={'class': 'form-control'}),
-            'quantity' :forms.TextInput(attrs={'class': 'form-control'})
+            'quantity' :forms.TextInput(attrs={'class': 'form-control my-4'})
         }
 
 class ClothingColorsForm(forms.ModelForm):
@@ -30,7 +39,7 @@ class ClothingColorsForm(forms.ModelForm):
         model = ClothingColors
         fields = ['color',]
         widgets = {
-            'color' :forms.TextInput(attrs={'class': 'form-control','type':'color'}),
+            'color' :forms.TextInput(attrs={'class': 'form-control my-4','type':'color'}),
         }
 
 class ClothingImagesForm(forms.ModelForm):
@@ -38,7 +47,7 @@ class ClothingImagesForm(forms.ModelForm):
         model = ClothingImages
         fields = ['image']
         widgets = {
-            'image' :forms.FileInput(attrs={'class': 'form-control'}),
+            'image' :forms.FileInput(attrs={'class': 'form-control my-4'}),
         }
 
 ClothingColorsFormSet = inlineformset_factory(

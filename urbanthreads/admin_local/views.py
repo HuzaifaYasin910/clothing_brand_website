@@ -6,6 +6,7 @@ from .forms import ClothingForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.generic import ListView
+from django.urls import reverse
 from django.shortcuts import (
     render,
     get_object_or_404,
@@ -30,11 +31,6 @@ from store.models import(
 )
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-
-from django.shortcuts import render, redirect
-from .forms import ClothingForm, ClothingSizeFormSet, ClothingImagesFormSet, ClothingColorsFormSet
-
 def create_clothing(request):
     if request.method == 'POST':
         clothing_form = ClothingForm(request.POST)
@@ -44,26 +40,17 @@ def create_clothing(request):
 
         if clothing_form.is_valid() and size_formset.is_valid() and images_formset.is_valid() and colors_formset.is_valid():
             clothing = clothing_form.save()
-            # Save the sizes
             if size_formset.is_valid():
-               
                 size_formset.instance = clothing
                 size_formset.save()
-
-            # Save the images
             if images_formset.is_valid():
-               
                 images_formset.instance = clothing
                 images_formset.save()
-
-            # Save the colors
             if colors_formset.is_valid():
-                for x in size_formset:
-                    print(x)
                 colors_formset.instance = clothing
                 colors_formset.save()
-
-            return redirect('clothing_detail', pk=clothing.pk)
+            messages.success(request,'Successfully Added To the DataBase')
+            return redirect(reverse('admin_local:create_clothing'))
     else:
         clothing_form = ClothingForm()
         size_formset = ClothingSizeFormSet(prefix='size')

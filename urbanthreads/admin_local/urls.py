@@ -5,6 +5,9 @@ from .views import (
     update_clothing,
     delete_clothing
 )
+
+app_name = 'admin_local'
+
 urlpatterns = [
     # Other URL patterns
     path('clothing/create/', create_clothing, name='create_clothing'),

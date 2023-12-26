@@ -10,16 +10,12 @@
                             <h3 style="font-family: Alatsi, sans-serif;margin-top: 10px;">Order History</h3>
                             <div class="table-responsive">
                                 <table class="table">
-                                    <thead>
-                                        <tr></tr>
-                                    </thead>
                                     <tbody>
                                         <tr>
-                                            <td><a href="#">
-                                                    <h5>ORDER LINK</h5>
-                                                </a></td>
+                                            <td>
+                                                <a href="#"><h5>ORDER LINK</h5></a>
+                                            </td>
                                         </tr>
-                                        <tr></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -28,7 +24,11 @@
                         <div class="col-md-12 col-lg-4">
                             <div class="summary" style="height: auto;">
                                 <h3>Account details</h3>
+                                {% if request.user.is_authenticated %}
                                 <p>{{request.user.username}}</p>
+                                {% else %}
+                                <p>Guest *Please Log in to checkout</p>
+                                {% endif %}
                                 <p>Pakistan</p><a class="btn btn-primary btn-lg d-block w-100" role="button" href="#" style="box-shadow: none;">VIEW ADDRESSES</a>
                             </div>
                         </div>

@@ -2,6 +2,7 @@
         <section class="clean-block clean-product dark pt-5">                
             <div class="container pt-5">
                 <div class="block-content">
+                    
                     <div class="product-info">
                         <div class="row">
                             <div class="col-md-6 p-0" style="height: 888px;">
@@ -24,7 +25,7 @@
                                     <div class="d-inline-flex w-100">
                                         <p class="size-symbol w-25"><strong>COLORS</strong><br></p>
                                         {% for color in product.clothing_color.all %}
-                                        <label class="form-label color-p-circle" for="color-1" style="background-color:{{color}};"></label>
+                                        <label class="form-label color-p-circle" for="color-1" style="background-color:{{color}};cursor: pointer;"></label>
                                         <input type="radio" id="color1" hidden>
                                         {% empty %}
                                           No colors.
@@ -45,8 +46,12 @@
                                         <hr>
                                         <p class="size-symbol">SIZE GUIDE</p>
                                         <form><!--buttons for pc and for mobile-->
-                                            <button class="btn btn-primary add-to-cart-btn thisone" style="width: 100%;font-size: .8em;" value="{{product.uid}}" id="for-pc">ADD TO CART</button>
-                                            <a href="{% url 'cart:add_to_cart' product.uid %}" class="btn btn-primary add-to-cart-btn" role="button" style="width: 100%;font-size: .8em;" id="for-mobile" >ADD TO CART</a>
+                                            <div id="customAlert" class="custom-alert alert alert-info">
+                                                <span class="alert-message w-100">
+                                                </span>
+                                                <div class="close-alert" onclick="closeCustomAlert()">&times;</div>
+                                            </div>
+                                            <button class="btn btn-primary add-to-cart-btn thisone" style="width: 100%;font-size: .8em;" value="{{product.uid}}" >ADD TO CART</button>
                                         </form>
                                     </div>
                                     <div class="summary">
@@ -65,16 +70,14 @@
             event.preventDefault();  
             var product_id=$(this).attr("value");
             var url="{% url 'cart:add_to_cart_ajax' 0 %}".replace('0', product_id); 
-            $.ajax({ 
-            type: "POST", 
-            url: url, 
+            $.ajax({
+            type: "POST",
+            url: url,
             data:{ csrfmiddlewaretoken: "{{csrf_token}}"}, 
-            success: function (data){ 
-            if (data.added){ 
-                document.getElementById('cartMenu').classList.add('show');
-                document.getElementById('cartDropdown').setAttribute('aria-expanded', 'true');
-                document.getElementById('cartDropdown').classList.add('show');        
-            } 
+            success: function (data){
+            if (data.added){
+                showCustomAlert("added!")        
+            }
             else{ 
                 Alert("error")}
             }, 
@@ -84,6 +87,14 @@
             console.log(errorThrown); 
             alert("Error")
             },
-            })}); 
+            })});
+            function showCustomAlert(message){
+            var customAlert=document.getElementById("customAlert"); 
+            var alertMessage=customAlert.querySelector(".alert-message"); 
+            alertMessage.textContent=message; 
+            customAlert.style.display="flex"} 
+            function closeCustomAlert(){
+            document.getElementById("customAlert").style.display="none"
+            }
         </script>
 {% endblock %}

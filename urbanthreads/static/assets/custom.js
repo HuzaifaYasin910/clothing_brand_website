@@ -28,3 +28,8 @@ $("#add_to_cart").click(function(event){
         document.getElementById("customAlert").style.display="none"
     } 
     
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        window.location.reload();
+        }
+    });

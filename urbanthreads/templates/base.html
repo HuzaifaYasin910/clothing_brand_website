@@ -25,13 +25,6 @@
         .custom-alert{
             display: none;
         }
-        @media (min-width: 992px) {
-  #for-pc {
-    display: block;
-  }
-}
-
-
     </style>
 </head>
 <body>
@@ -42,43 +35,17 @@
                 <div class="collapse navbar-collapse order-2" id="navcol-2">
                     <ul class="navbar-nav">
                         
-                        <li class="nav-item mx-3"><a class="nav-link active" href="#offcanvas-1" style="color: var(--bs-gray-900);font-weight: bold;" data-bs-target="#navslide" data-bs-toggle="offcanvas">
+                        <li class="nav-item mx-3">
+                            <a class="nav-link active" href="#offcanvas-1" style="color: var(--bs-gray-900);font-weight: bold;" data-bs-target="#navslide" data-bs-toggle="offcanvas">
                             <svg width="30" class="new-svg-hamburger" height="12" viewBox="0 0 30 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <line y1="1" x2="30" y2="1" stroke="black" stroke-width="2"></line>
                             <line y1="11" x2="20" y2="11" stroke="black" stroke-width="2"></line>
                             </svg></a>
                         </li>
                         <li class="nav-item d-xxl-flex align-items-xxl-end mx-3">
-                            <div class="nav-item dropdown" ><a class="dropdown-toggle active fs-4" id="cartMenu" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="icon-handbag"></i></a>
-                                <div class="dropdown-menu cart-drop p-3" id="cartDropdown">
-                                    <h6 class="fw-bold">SHOPPING CART</h6>
-                                    <div class="outer-div">
-                                        {% if guest %}
-                                        {% for cart_product in cart_products %}
-                                        <div id="start-from-here" class="inner-div p-1 flex">
-                                            <img class="h-100 w-auto" src="{{ cart_product.product_images.first.image.url}}">
-                                            <div class="p-1 w-100">
-                                                <span>{{ cart_product.product_name }}
-                                                    <br>{{ cart_product.product_clothing_type }}
-                                                    <br>{{product.product_category}} - SIZE
-                                                    <br>
-                                                </span>
-                                                <h6 class="text-end fw-bold">PKR {{ cart_product.product_price }}</h6>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                    <div>
-                                        <h6 class="text-end fw-bold m-0 pt-2">Subtotal : PKR {{total_price}}</h6>
-                                        <span><br><span style="color: rgb(0, 0, 0);">
-                                            *ALL ORDERS MAY TAKE UPTO 7 WORKING DAYS TO BE DELIVERED TO YOUR DOORSTEP</span><br>
-                                        </span>
-                                        <a class="btn btn-primary w-100 btn-p" role="button" href="{% url 'cart:cart' %}">CHECK OUT&nbsp;</a>
-                                        <a class="btn btn-primary white-btn w-100 mt-2 btn-p" href="#" role="button">CONTINUE SHOPPING</a>
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="{% url 'cart:cart' %}">
+                                <i class="icon-handbag fs-4"></i>
+                            </a>                            
                         </li>
 
                     </ul>
@@ -181,5 +148,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
     <script src="{% static 'assets\js\script.min.js' %}"></script>
+    <script src="{% static 'assets\custom.js' %}"></script>
 </body>
 </html>

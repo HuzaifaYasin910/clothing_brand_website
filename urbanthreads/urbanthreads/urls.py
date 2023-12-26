@@ -26,6 +26,7 @@ urlpatterns = [
     path('',include('store.urls')),
     path('',include('accounts.urls')),
     path('',include('admin_local.urls')),
+    path('',include('cart.urls')),
     path('',RedirectView.as_view(url = 'home/')),
 ]
 if settings.DEBUG:

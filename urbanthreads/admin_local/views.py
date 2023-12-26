@@ -1,11 +1,7 @@
-from django.http import HttpResponse
-from accounts.models import Order
-from django.db.models import Q
 from store.models import *
 from .forms import ClothingForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.views.generic import ListView
 from django.urls import reverse
 from django.shortcuts import (
     render,
@@ -13,10 +9,6 @@ from django.shortcuts import (
     redirect
 )
 
-from django.views.generic.edit import (
-    CreateView,
-    UpdateView
-)
 from .forms import (
     ClothingForm, 
     ClothingSizeFormSet, 
@@ -24,11 +16,9 @@ from .forms import (
     ClothingColorsFormSet
 )
 from store.models import( 
-    Clothing, 
-    ClothingSize, 
-    ClothingColors, 
-    ClothingImages
+    Clothing
 )
+
 
 
 def create_clothing(request):

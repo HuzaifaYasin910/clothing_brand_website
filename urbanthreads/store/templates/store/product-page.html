@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-        <section class="clean-block clean-product dark pt-5">
+        <section class="clean-block clean-product dark pt-5">                
             <div class="container pt-5">
                 <div class="block-content">
                     <div class="product-info">
@@ -11,7 +11,7 @@
                                         <div class="sidebar">
                                           {% for image in product.product_images.all %}
                                           <img class="img-fluid d-block small-preview" src="{{ image.image.url }}"onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"/>
-                                        {% endfor %}
+                                          {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -24,7 +24,8 @@
                                     <div class="d-inline-flex w-100">
                                         <p class="size-symbol w-25"><strong>COLORS</strong><br></p>
                                         {% for color in product.clothing_color.all %}
-                                        <div class="color-p-circle" style="background-color:{{color}};"></div>
+                                        <label class="form-label color-p-circle" for="color-1" style="background-color:{{color}};"></label>
+                                        <input type="radio" id="color1" hidden>
                                         {% empty %}
                                           No colors.
                                         {% endfor %}
@@ -32,7 +33,8 @@
                                     <div class="d-inline-flex w-100">
                                         <h6 class="w-25 size-symbol">SIZE</h6>
                                         {% for size in product.clothing_size.all %}
-                                         <h6 class="size-symbol mx-1">{{size}}</h6>
+                                        <label class="form-label size-symbol mx-1" for="size1">{{size}}</label>
+                                        <input type="radio" id="size-1" hidden>
                                         {% endfor %}
                                     </div>
                                     <div class="d-inline-flex w-100">
@@ -42,7 +44,10 @@
                                     <div>
                                         <hr>
                                         <p class="size-symbol">SIZE GUIDE</p>
-                                        <form><a href="{% url 'accounts:add_to_cart' product.uid %}" class="btn btn-primary add-to-cart-btn" role="button" style="width: 100%;font-size: .8em;">ADD TO CART</a></form>
+                                        <form><!--buttons for pc and for mobile-->
+                                            <button class="btn btn-primary add-to-cart-btn thisone" style="width: 100%;font-size: .8em;" value="{{product.uid}}" id="for-pc">ADD TO CART</button>
+                                            <a href="{% url 'cart:add_to_cart' product.uid %}" class="btn btn-primary add-to-cart-btn" role="button" style="width: 100%;font-size: .8em;" id="for-mobile" >ADD TO CART</a>
+                                        </form>
                                     </div>
                                     <div class="summary">
                                         <p><br><strong>COMPOSITION &amp; CARE</strong><br>MACHINE WASH UP TO 30C/86F, GENTLE CYCLE<br>DO NOT BLEACH<br>IRON UP TO 110C/230F<br>DO NOT IRON DIRECTLY ON PRINTS/EMBROIDERY/EMBELLISHMENTS/LI&gt;<br>DO NOT DRY CLEAN<br>DO NOT TUMBLE DRY<br><br></p>
@@ -54,4 +59,31 @@
                 </div>
             </div>
         </section>
+        <script>
+            $(".thisone").click(function(event){ 
+            console.log("Card link clicked"); 
+            event.preventDefault();  
+            var product_id=$(this).attr("value");
+            var url="{% url 'cart:add_to_cart_ajax' 0 %}".replace('0', product_id); 
+            $.ajax({ 
+            type: "POST", 
+            url: url, 
+            data:{ csrfmiddlewaretoken: "{{csrf_token}}"}, 
+            success: function (data){ 
+            if (data.added){ 
+                document.getElementById('cartMenu').classList.add('show');
+                document.getElementById('cartDropdown').setAttribute('aria-expanded', 'true');
+                document.getElementById('cartDropdown').classList.add('show');        
+            } 
+            else{ 
+                Alert("error")}
+            }, 
+            error: function (xhr, textStatus, errorThrown){ 
+            console.log(xhr); 
+            console.log(textStatus); 
+            console.log(errorThrown); 
+            alert("Error")
+            },
+            })}); 
+        </script>
 {% endblock %}

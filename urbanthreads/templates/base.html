@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Urbanthreads</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="shortcut icon" href="https://miro.medium.com/v2/resize:fill:120:120/1*sHhtYhaCe2Uc3IU0IgKwIQ.png" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abel&amp;display=swap">
@@ -20,6 +21,18 @@
     <link rel="stylesheet" href="{% static 'assets\bootstrap\css\bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets\css\styles.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets\fonts\fontawesome5-overrides.min.css' %}">
+    <style>
+        .custom-alert{
+            display: none;
+        }
+        @media (min-width: 992px) {
+  #for-pc {
+    display: block;
+  }
+}
+
+
+    </style>
 </head>
 <body>
     <main class="page h-auto">
@@ -36,8 +49,8 @@
                             </svg></a>
                         </li>
                         <li class="nav-item d-xxl-flex align-items-xxl-end mx-3">
-                            <div class="nav-item dropdown"><a class="dropdown-toggle active fs-4" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="icon-handbag"></i></a>
-                                <div class="dropdown-menu cart-drop p-3">
+                            <div class="nav-item dropdown" ><a class="dropdown-toggle active fs-4" id="cartMenu" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="icon-handbag"></i></a>
+                                <div class="dropdown-menu cart-drop p-3" id="cartDropdown">
                                     <h6 class="fw-bold">SHOPPING CART</h6>
                                     <div class="outer-div">
                                         {% if guest %}
@@ -61,7 +74,7 @@
                                         <span><br><span style="color: rgb(0, 0, 0);">
                                             *ALL ORDERS MAY TAKE UPTO 7 WORKING DAYS TO BE DELIVERED TO YOUR DOORSTEP</span><br>
                                         </span>
-                                        <a class="btn btn-primary w-100 btn-p" role="button" href="{% url 'accounts:cart' %}">CHECK OUT&nbsp;</a>
+                                        <a class="btn btn-primary w-100 btn-p" role="button" href="{% url 'cart:cart' %}">CHECK OUT&nbsp;</a>
                                         <a class="btn btn-primary white-btn w-100 mt-2 btn-p" href="#" role="button">CONTINUE SHOPPING</a>
                                     </div>
                                 </div>
@@ -140,6 +153,7 @@
                 </div><a class="btn btn-primary" role="button" href="{% url 'accounts:user_profile' %}"><i class="far fa-user-circle"></i>Profile</a>
             </div>
         </div>
+        
         {% block content %}
         {% endblock %}
 

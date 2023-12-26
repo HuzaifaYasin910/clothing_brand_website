@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+     'cart',
         'whitenoise.runserver_nostatic',
         'accounts.apps.AccountsConfig',
         'admin_local.apps.AdminLocalConfig',
@@ -75,7 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'accounts.processor.get_cart_data',
+                'cart.processor.get_cart_data',
             ],
         },
     },

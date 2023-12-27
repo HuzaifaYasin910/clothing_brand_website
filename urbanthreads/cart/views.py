@@ -34,7 +34,9 @@ def remove_from_cart(request, cart_product_id):
     cart_product = get_object_or_404(CartProduct, pk=cart_product_id)
     cart_product.delete()
     return redirect('accounts:cart')
-
+'''
+I WAS HAVING A PROBLEM HERE 
+'''
 def get_cart_data(request):
     cart_products = []
     total_price = 0
@@ -63,13 +65,18 @@ def add_to_cart_ajax(request, product_id):
             product=product,
             defaults={'quantity': 1}
         )
+        print('##uuu##')
         if not cp_created:
+            print('##uuu##')
             cart_product.quantity += 1
             cart_product.save()
+            print('##uuu##')
     else:
+        print('####')
         cart = request.session.get('cart', {})
         cart_product_quantity = cart.get(str(product_id), 0)
         cart[str(product_id)] = cart_product_quantity + 1
         request.session['cart'] = cart
+        print('####')
     response_data = {'added': True}
     return JsonResponse(response_data)

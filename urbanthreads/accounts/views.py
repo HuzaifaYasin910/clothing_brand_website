@@ -26,8 +26,25 @@ def login_view(request):
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                auth_login(request, user) 
-                return redirect('accounts:user_profile')  
+                guest_cart = request.session.get('cart', {})
+                authenticated_user_cart = Cart.objects.filter(user=user).first()
+                if authenticated_user_cart:
+                    for product_id, quantity in guest_cart.items():
+                        product = Clothing.objects.get(pk=product_id)
+                        print(product.product_name)
+                        cart_product, created = CartProduct.objects.get_or_create(
+                            cart=authenticated_user_cart,
+                            user=user,
+                            product=product,
+                            defaults={'quantity': quantity}
+                        )
+                        if not created:
+                            cart_product.quantity += quantity
+                            cart_product.save()
+                    del request.session['cart']
+                    request.session.modified = True
+                auth_login(request, user)
+                return redirect('accounts:user_profile')
             else:
                 messages.error(request, 'Invalid username or password.')
                 return redirect('accounts:login')

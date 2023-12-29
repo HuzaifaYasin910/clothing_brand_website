@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.db import IntegrityError
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -31,7 +32,14 @@ def login_view(request):
                 if authenticated_user_cart:
                     for product_id, quantity in guest_cart.items():
                         product = Clothing.objects.get(pk=product_id)
-                        print(product.product_name)
+                        remaining_space = 5
+                        existing_quantity = CartProduct.objects.filter(cart=authenticated_user_cart, product=product).aggregate(total_quantity= Sum('quantity') )['total_quantity']
+                        if existing_quantity is None:
+                            existing_quantity = 0
+                            remaining_space = 5 - existing_quantity
+                        if remaining_space <= 0:
+                            break  
+                        quantity = min(quantity, remaining_space)
                         cart_product, created = CartProduct.objects.get_or_create(
                             cart=authenticated_user_cart,
                             user=user,

@@ -105,7 +105,6 @@ def update_cart_qty(request,product_id):
                 cart_product.save()
             else:
                 print('received in guest')
-                # For non-authenticated users, handle quantity update in session
                 cart = request.session.get('cart', {})
                 cart[str(product_id)] = quantity
                 request.session['cart'] = cart

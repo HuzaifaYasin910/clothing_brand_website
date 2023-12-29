@@ -16,13 +16,15 @@ def view_cart(request):
             cart_products = cart.cart_products.all()
             total_price = sum(product.product.product_price * product.quantity for product in cart_products)
             guest = False
+            qty= None
     else:
         cart = request.session.get('cart', {})
         product_ids = cart.keys()
+        qty = [value for value in cart.values()]
         cart_products = Clothing.objects.filter(pk__in=product_ids)
         total_price = sum(product.product_price * cart[str(product.pk)] for product in cart_products)
         guest=True
-    return render(request, 'cart/cart.html',{'cart_products': cart_products, 'total_price': total_price,'guest':guest})
+    return render(request, 'cart/cart.html',{'cart_products': cart_products, 'total_price': total_price,'guest':guest,'qty':qty})
 
 def remove_from_cart(request, cart_product_id):
     cart_product = get_object_or_404(CartProduct, pk=cart_product_id)

@@ -41,7 +41,10 @@ def login_view(request):
                         if not created:
                             cart_product.quantity += quantity
                             cart_product.save()
-                    del request.session['cart']
+                    try:
+                        del request.session['cart']
+                    except:
+                        cart = request.session.get('cart', {})
                     request.session.modified = True
                 auth_login(request, user)
                 return redirect('accounts:user_profile')
@@ -74,7 +77,7 @@ def create_user_account(request):
     return render(request, 'accounts/register.html')
 
 def user_profile(request):
-   
+
     if request.user.is_authenticated:
         username = request.user.username
         is_authenticated = True

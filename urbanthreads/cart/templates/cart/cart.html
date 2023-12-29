@@ -13,7 +13,8 @@
                                 {% if cart_products %}
                                 {% if guest %}
 
-                                {% for cart_product in cart_products %}        
+                                {% for cart_product in cart_products %}   
+                                {% for q in qty %}     
                                 <tr id="start-from-here">
                                     <td class="border-0" colspan="3">
                                         <div class="row w-100">
@@ -24,22 +25,19 @@
                                                         <div class="col-md-6 py-4">
                                                         <h6 class="fw-bold m-0">{{ cart_product.product_name }}</h6>
                                                         <span><br>
-                                                        <span style="color: rgba(0, 0, 0, 0.75);">PKR {{ cart_product.product_price }}</span><br>
-                                                        <span style="color: rgba(0, 0, 0, 0.75);">Color:--- REQUIRED ---</span><br>
-                                                        <span style="color: rgba(0, 0, 0, 0.75);">Size: </span><br>
-                                                        <span style="color: rgba(0, 0, 0, 0.75);">Gender: {{ cart_product.product_category }}</span><br>
+                                                        PKR {{ cart_product.product_price }}<br>
+                                                        Color:--- REQUIRED ---<br>
+                                                        Size: <br>
+                                                        Gender: {{ cart_product.product_category }}<br>
                                                         </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 d-flex">
-                                                    <div class="add-sub-box">
-                                                        <button class="btn btn-primary qty_button" data-product_id="{{cart_product.uid}}" type="button" value="-">-</button>
+                                                    <div class="add-sub-box"><button class="btn btn-primary qty_button" data-product_id="{{cart_product.uid}}" type="button" value="-">-</button>
                                                         <div>
-                                                            <p id="{{cart_product.uid}}">{{ cart_product.quantity }}</p>
-                                                        </div>
-                                                        <button class="btn btn-primary qty_button" data-product_id="{{cart_product.uid}}" type="button" value="+">+</button>
-                                                    </div>                                                    
+                                                            <p id="{{cart_product.uid}}">{{q }}</p>
+                                                        </div><button class="btn btn-primary qty_button" data-product_id="{{cart_product.uid}}" type="button" value="+">+</button>
                                                     </div><a class="mx-5" href="{% url 'cart:delete_from_cart' cart_product.uid %}"><i class="far fa-trash-alt fs-3"></i></a>
                                                 </div>
                                             <div class="col-md-4">
@@ -48,6 +46,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                {% endfor %}
                                 {% endfor %}
 
                                 {% else %}

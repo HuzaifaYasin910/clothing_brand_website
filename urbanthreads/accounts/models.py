@@ -61,7 +61,6 @@ class CartProduct(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # Other fields for Cart if needed
 
     def __str__(self):
         return f"{self.user}'s cart"

@@ -6,7 +6,7 @@ Urban Threads is an e-commerce website built using Django framework. It allows u
 
 - [Introduction](#introduction)
 - [Features](#features)
-- - [User-Friendly Interface](#user-friendly-interface)
+- [User-Friendly Interface](#user-friendly-interface)
 - [Product Zoom](#product-zoom)
 - [Shopping Cart](#shopping-cart)
 - [Order Tracking](#order-tracking)

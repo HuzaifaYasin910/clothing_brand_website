@@ -8,6 +8,7 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 from store.models import *
 import uuid
+import json
 from django.http import JsonResponse
 from django.shortcuts import (
     render,
@@ -27,33 +28,7 @@ def login_view(request):
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                guest_cart = request.session.get('cart', {})
-                authenticated_user_cart = Cart.objects.filter(user=user).first()
-                if authenticated_user_cart:
-                    for product_id, quantity in guest_cart.items():
-                        product = Clothing.objects.get(pk=product_id)
-                        remaining_space = 5
-                        existing_quantity = CartProduct.objects.filter(cart=authenticated_user_cart, product=product).aggregate(total_quantity= Sum('quantity') )['total_quantity']
-                        if existing_quantity is None:
-                            existing_quantity = 0
-                            remaining_space = 5 - existing_quantity
-                        if remaining_space <= 0:
-                            break  
-                        quantity = min(quantity, remaining_space)
-                        cart_product, created = CartProduct.objects.get_or_create(
-                            cart=authenticated_user_cart,
-                            user=user,
-                            product=product,
-                            defaults={'quantity': quantity}
-                        )
-                        if not created:
-                            cart_product.quantity += quantity
-                            cart_product.save()
-                    try:
-                        del request.session['cart']
-                    except:
-                        cart = request.session.get('cart', {})
-                    request.session.modified = True
+                
                 auth_login(request, user)
                 return redirect('accounts:user_profile')
             else:
@@ -105,11 +80,10 @@ def user_profile(request):
 
     
 def logout_view(request):
+    response = redirect('/home',{"is_authenticated":False})
+    response.delete_cookie('cart')
     logout(request)
-    return redirect('/home',{"is_authenticated":False})    
-
-
-
+    return response 
 
 def checkout(request, product_pk, product_category, product_name ):
     if request.user.is_authenticated:

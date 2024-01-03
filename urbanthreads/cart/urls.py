@@ -4,9 +4,8 @@ from .views import *
 app_name = 'cart'
 
 urlpatterns = [
-    path('cart/<int:product_pk>/<str:product_catagory>/<str:product_name>/', view_cart, name='cart'),
     path('user/cart',view_cart,name='cart'),
-    path('add_to_cart_ajax/<product_id>',add_to_cart_ajax,name='add_to_cart_ajax'),
+    path('add_to_cart_ajax/',add_to_cart_ajax,name='add_to_cart_ajax'),
     path('delete_from_cart/<product_id>',delete_from_cart,name='delete_from_cart'),
     path('update_cart/<product_id>',update_cart_qty,name='update_cart'),
     ]

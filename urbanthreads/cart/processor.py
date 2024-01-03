@@ -1,22 +1,22 @@
-from accounts.models import Cart
-from store.models import Clothing
+from django.http import HttpResponse
+import datetime
 
-
-
-def get_cart_data(request):
-    cart_products = []
-    total_price = 0
-    if request.user.is_authenticated:
-        cart = Cart.objects.filter(user=request.user).first()
-        if cart:
-            cart_products = cart.cart_products.all()
-            total_price = sum(product.product.product_price * product.quantity for product in cart_products)
-            guest = False
+def set_cookies(response, days_expire=7):
+    if days_expire is None:
+        max_age = 365 * 24 * 60 * 60  # one year
     else:
-        cart = request.session.get('cart', {})
-        product_ids = cart.keys()
-        cart_products = Clothing.objects.filter(pk__in=product_ids)
-        total_price = sum(product.product_price * cart[str(product.pk)] for product in cart_products)
-        guest=True
-    print(cart)
-    return {'cart_products': cart_products, 'total_price': total_price,'guest':guest}
+        max_age = days_expire * 24 * 60 * 60
+    expires = datetime.datetime.strftime(
+        datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age),
+        "%a, %d-%b-%Y %H:%M:%S GMT",
+    )
+    response = HttpResponse()
+    response.set_cookie(
+        key='student',
+        value='001',
+        max_age=max_age,
+        expires=expires,
+        domain=None,
+        secure=None,
+    )
+    

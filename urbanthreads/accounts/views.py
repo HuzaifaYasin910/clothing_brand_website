@@ -1,15 +1,15 @@
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.db.models import F
 from django.db import IntegrityError
 from django.contrib import messages
 from django.contrib.auth import logout
 from .forms import *
 from .models import *
-from django.contrib.auth.decorators import login_required
-from store.models import *
+from store.models import Clothing
+from cart.utils import helper_cookies,JSONDECODE,JSONENCODE
+from django.http import HttpResponse
 import uuid
 import json
-from django.http import JsonResponse
 from django.shortcuts import (
     render,
     redirect,
@@ -18,25 +18,85 @@ from django.contrib.auth import (
     authenticate,
     login as auth_login
 )
-
-
+from cart.views import make_cookies
 
 def login_view(request):
-    if not request.user.is_authenticated:
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                
+    if request.method == 'POST':
+        user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))    
+        if user :
+            cart = request.COOKIES.get('cart')
+            if cart:
+                try: items_data = json.loads(cart)
+                except Exception as e:return HttpResponse('error in handeling of json data',e)
+                user_cart, created = Cart.objects.get_or_create(user=user)   
+                cart_products = CartProduct.objects.filter(
+                    cart=user_cart,
+                    user=user
+                ).select_related('product')
+                new_cart_products=[]
+                existing_products = {cp.product_id: cp for cp in cart_products}
+                print(existing_products,'existing_products')
+                for product_id, attributes in items_data.items():
+                    
+
+                    existing_cart_product = existing_products.get(product_id)
+
+                    if existing_cart_product:
+                        print(f"Product with id {product_id} already exists")
+                        continue
+                    try:
+                        product = Clothing.objects.get(pk=product_id)
+                    except Clothing.DoesNotExist:
+                        print(f"Product with id {product_id} does not exist")
+                        continue
+                    
+                    quantity = attributes.get('quantity', 1)
+                    color = attributes.get('color')
+                    size = attributes.get('size')
+
+                    new_cart_products.append(
+                        CartProduct(
+                            user=user,
+                            product=product,
+                            quantity=quantity,
+                            color=color,
+                            size=size,
+                            cart=user_cart
+                        )
+                    )
+
+                # Bulk create new products if new_cart_products is not empty
+                if new_cart_products:
+                    CartProduct.objects.bulk_create(new_cart_products)
+
                 auth_login(request, user)
-                return redirect('accounts:user_profile')
+                response = redirect('accounts:user_profile')
+                response.set_cookie('cart',make_cookies(request))
+                return response
+                            
             else:
-                messages.error(request, 'Invalid username or password.')
-                return redirect('accounts:login')
-        return render(request, 'accounts/login.html')
-    else:
-        return redirect('accounts:user_profile')
+                print('none cart')
+                auth_login(request, user)
+                response = redirect('accounts:user_profile')
+                response.set_cookie('cart',make_cookies(request))
+                return response   
+            
+        else:
+            messages.error(request, 'Invalid username or password.')
+            return redirect('accounts:login')
+    return render(request,'accounts/login.html')
+
+def cookies(request):
+    user_cart_products = CartProduct.objects.filter(user=request.user)
+    cart_data = {}
+    for item in user_cart_products:
+        item_data= {
+        'quantity': item.quantity,
+        'color':item.color,
+        'size': item.size,
+        }
+        cart_data[str(item.product.uid)] = item_data
+    return json.dumps(cart_data)
 
 
 def create_user_account(request):

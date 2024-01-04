@@ -95,7 +95,7 @@
             showCustomAlert("added!")
         },
         error: function(xhr, status, error) {
-            showCustomAlert("ERROR!",error)
+            showCustomAlert(xhr.responseJSON.error)
         }
         });
     }

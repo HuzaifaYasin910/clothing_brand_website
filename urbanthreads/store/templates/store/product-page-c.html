@@ -1,0 +1,92 @@
+{% extends 'base.html' %} {% block content %}
+<!-- product page -->
+<main class="page product-page" style="background: rgb(255, 255, 255)">
+  <section
+    class="clean-block clean-product dark"
+    style="background: rgb(255, 255, 255); border: none; box-shadow: none"
+  >
+    <div class="container">
+      <div class="block-content" style="border: none; box-shadow: none">
+        <div class="product-info">
+          <div class="row">
+            <div class="col-md-6" style="height: 888px">
+              <div class="gallery" style="height: 885px">
+                <div id="product-preview" class="vanilla-zoom">
+                  <div class="zoomed-image" style="height: 700px"></div>
+                  <div class="sidebar">
+                    {% for image in product.product_images.all %}
+                    <img
+                      class="img-fluid d-block small-preview"
+                      src="{{ image.image.url }}"
+                      onerror="this.src='https://cdn.jsdelivr.net/gh/StaticUser123/statics@main/placeholder.png';"
+                    />
+                   {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info">
+                <h3 style="font-family: Alatsi, sans-serif">
+                  {{product.product_name}}
+                </h3>
+                <h5 style="font-family: Alatsi, sans-serif">
+                  $ {{product.price}}
+                  {% for colors in product.clothing_color.color %}
+                  {{colors}}
+                  {% endfor %}
+                </h5>
+                {% for colors in product.clothing_color.color %}
+                  {{colors}}
+                  {% endfor %}
+                <div class="price" style="border-top-style: solid">
+                    <button
+                      class="btn"
+                      type="button"
+                      style="border: black solid 1px; width: 100%"
+                    >
+                      Add To Cart
+                    </button>
+                  </a>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      style="border-width: 0px; background: black; width: 100%"
+                    >
+                      Order now
+                    </button>
+                  </a>
+                </div>
+                <div
+                  class="summary"
+                  style="
+                    padding-top: 9px;
+                    border-top: 2px solid var(--bs-gray-600);
+                  "
+                >
+                  <h4 style="font-family: Alatsi, sans-serif">Article</h4>
+                  <p style="font-family: Alatsi, sans-serif">
+                    {{product.article}}
+                  </p>
+                  <p
+                    style="
+                      font-family: Alatsi, sans-serif;
+                      border-top: 2px solid var(--bs-gray-600);
+                    "
+                  >
+                    <br /><strong>COMPOSITION &amp; CARE</strong><br />MACHINE
+                    WASH UP TO 30C/86F, GENTLE CYCLE<br />DO NOT BLEACH<br />IRON
+                    UP TO 110C/230F<br />DO NOT IRON DIRECTLY ON
+                    PRINTS/EMBROIDERY/EMBELLISHMENTS/LI&gt;<br />DO NOT DRY
+                    CLEAN<br />DO NOT TUMBLE DRY<br /><br />
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

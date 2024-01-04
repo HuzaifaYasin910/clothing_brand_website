@@ -10,35 +10,36 @@
                                     <td>PRODUCT</td>
                                     <td>QUANTITY</td>
                                     <td class="text-end">TOTAL</td>
-                                {% if cart_products %}
-                                {% if guest %}
+                                {% if cart_items %}
+                                
 
-                                {% for cart_product in cart_products %}   
-                                {% for q in qty %}
+                                {% for item in cart_items %}   
+                               
                                 <tr id="start-from-here">
                                     <td class="border-0" colspan="3">
                                         <div class="row w-100">
                                             <div class="col-md-4">
                                                 
                                                 <div class="row">
-                                                    <div class="col-md-6 d-flex justify-content-center"><img class="w-auto" src="{{ cart_product.product_images.first.image.url}}" style="height: 198.4px;"></div>
+                                                    <div class="col-md-6 d-flex justify-content-center"><img class="w-auto" src="{{ item.product.product_images.first.image.url}}" style="height: 198.4px;"></div>
                                                         <div class="col-md-6 py-4">
-                                                        <h6 class="fw-bold m-0">{{ cart_product.product_name }}</h6>
+                                                        <h6 class="fw-bold m-0">{{ item.product.product_name }}</h6>
                                                         <span><br>
-                                                        PKR {{ cart_product.product_price }}<br>
-                                                        Color:--- REQUIRED ---<br>
-                                                        Size: <br>
-                                                        Gender: {{ cart_product.product_category }}<br>
+                                                        PKR {{ item.product.product_price }}<br>
+                                                        Color: {{ item.color }}<br>
+                                                        Size: {{ item.size }}<br>
+                                                        Gender: {{ item.product.product_category }}<br>
                                                         </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 d-flex">
-                                                    <div class="add-sub-box"><button class="btn btn-primary qty_button" data-product_id="{{cart_product.uid}}" type="button" value="-">-</button>
+                                                    <div class="add-sub-box"><button class="btn btn-primary qty_button" data-product_id="{{item.product.uid}}" type="button" value="-">-</button>
                                                         <div>
-                                                            <p id="{{cart_product.uid}}">{{q }}</p>
-                                                        </div><button class="btn btn-primary qty_button" data-product_id="{{cart_product.uid}}" type="button" value="+">+</button>
-                                                    </div><a class="mx-5" href="{% url 'cart:delete_from_cart' cart_product.uid %}"><i class="far fa-trash-alt fs-3"></i></a>
+                                                            <p id="{{item.product.uid}}"  data-url="{% url 'cart:update_cart' %}">{{ item.quantity }}</p>
+                                                        </div><button class="btn btn-primary qty_button" data-product_id="{{item.product.uid}}" type="button" value="+">+</button>
+                                                    </div>
+                                                    <a class="mx-5" href="{% url 'cart:delete_from_cart' item.product.uid %}"><i class="far fa-trash-alt fs-3"></i></a>
                                                 </div>
                                             <div class="col-md-4">
                                                 <h6 class="text-end fw-bold mt-3">PKR {{total_price}}</h6>
@@ -46,46 +47,9 @@
                                         </div>
                                     </td>
                                 </tr>
+                               
                                 {% endfor %}
-                                {% endfor %}
-
-                                {% else %}
-
-                                {% for cart_product in cart_products %}        
-                                <tr id="start-from-here">
-                                    <td class="border-0" colspan="3">
-                                        <div class="row w-100">
-                                            <div class="col-md-4">
-                                                
-                                                <div class="row">
-                                                    <div class="col-md-6 d-flex justify-content-center"><img class="w-auto" src="{{ cart_product.product.product_images.first.image.url}}" style="height: 198.4px;"></div>
-                                                        <div class="col-md-6 py-4">
-                                                        <h6 class="fw-bold m-0">{{ cart_product.product.product_name }}</h6>
-                                                        <span class="fs13"><br>
-                                                        PKR {{ cart_product.product.product_price }}<br>
-                                                        Color:--- REQUIRED ---<br>
-                                                        Size: <br>
-                                                        Gender: {{ cart_product.product.product_category }}<br>
-                                                        </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 d-flex">
-                                                    <div class="add-sub-box"><button class="btn btn-primary qty_button" data-product_id="{{cart_product.id}}" type="button" value="-">-</button>
-                                                        <div>
-                                                            <p id="{{cart_product.id}}">{{ cart_product.quantity }}</p>
-                                                        </div><button class="btn btn-primary qty_button" data-product_id="{{cart_product.id}}" type="button" value="+">+</button>
-                                                    </div><a class="mx-5" href="{% url 'cart:delete_from_cart' cart_product.id %}"><i class="far fa-trash-alt fs-3"></i></a>
-                                                </div>
-                                            <div class="col-md-4">
-                                                <h6 class="text-end fw-bold mt-3">PKR {{total_price}}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-
-                                {% endif%}
+                               
                                 {% else %}
                                 <p>No item in the cart</p>
                                 {% endif%}
@@ -102,9 +66,9 @@
                 <form><button class="btn btn-primary w-100 btn-p" type="button">CHECK OUT&nbsp;</button></form><a class="btn btn-primary white-btn w-100 mt-2 btn-p" role="button">CONTINUE SHOPPING</a>
             </div>
         </div>
-        <script>
-   function updateCartQuantity(quantity, product_id) {
-    var url="{% url 'cart:update_cart' 0 %}".replace('0', product_id); 
+<script>
+    //
+   function updateCartQuantity(quantity, product_id,url) {
     $.ajax({
         url: url,
         method: 'POST',
@@ -112,13 +76,14 @@
             'X-CSRFToken': '{{ csrf_token }}'
         },
         data: {
-            quantity: quantity
+            quantity: quantity,
+            product_id:product_id
         },
         success: function(response) {
             console.log('database updated');
         },
         error: function(xhr, status, error) {
-            console.error('Failed to update cart database:', error);
+            console.error('', error);
         }
     });
 }
@@ -129,15 +94,16 @@ buttons.forEach(button => {
     button.addEventListener('click', function() {
         const targetId = button.getAttribute('data-product_id');
         const quantityDisplay = document.getElementById(targetId);
+        const url = quantityDisplay.getAttribute('data-url')
         console.log(button.value);
         const buttonValue = button.value;
         let quantity = parseInt(quantityDisplay.textContent);
         if (buttonValue === '+' && quantity < 5) {
             quantity += 1;
-            updateCartQuantity(quantity, targetId);
+            updateCartQuantity(quantity, targetId,url);
         } else if (buttonValue === '-' && quantity > 1) {
             quantity -= 1;
-            updateCartQuantity(quantity, targetId);
+            updateCartQuantity(quantity, targetId,url);
         }
         quantityDisplay.textContent = `${quantity}`;
         

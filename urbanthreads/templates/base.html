@@ -61,7 +61,11 @@
                 </ul>
                 <div class="order-3 ms-auto order-md-3 navbar-collapse collapse nav-content">
                     <ul class="navbar-nav ms-auto">
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link mx-3" href="{% url 'accounts:user_profile' %}" >Account</a></li>
+                        {% else %}
                         <li class="nav-item"><a class="nav-link mx-3" href="{% url 'accounts:login' %}" >Login</a></li>
+                        {% endif %}
                         <li class="nav-item"><a class="nav-link  mx-3" href="about-us.html" >ABOUT US</a></li>
                     </ul>
                 </div>

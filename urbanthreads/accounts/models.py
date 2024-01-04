@@ -54,6 +54,8 @@ class CartProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Clothing, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    color = models.CharField(max_length=30, null=True, blank=True)
+    size = models.CharField(max_length=5, null=True, blank=True)
     cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='cart_products')
 
     def __str__(self):

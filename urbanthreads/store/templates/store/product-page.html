@@ -92,7 +92,12 @@
         processData: false,
         contentType: false,
         success: function(response) {
-            showCustomAlert("added!")
+            if (response.error){
+                showCustomAlert(response.error)
+            }
+            else{
+                showCustomAlert("added!")
+            }
         },
         error: function(xhr, status, error) {
             showCustomAlert(xhr.responseJSON.error)

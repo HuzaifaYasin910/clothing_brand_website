@@ -6,58 +6,40 @@ from accounts.models import (
     Cart,
     CartProduct
 )
-from .utils import make_cookies,set_guest_cart_cookie,JSONDECODE,JSONENCODE
-
+import logging
+from .utils import user_cookies,guest_cookies,JSONDECODE,JSONENCODE
+from django.db import IntegrityError
+logger = logging.getLogger(__name__)
 def view_cart(request):
-    cart_data = request.COOKIES.get('cart')
-    if cart_data:
+    cookie_cart = request.COOKIES.get('cart')
+    if cookie_cart:
         items=[]
-        items_data = JSONDECODE(cart_data)  
-        print(items_data)
-        if request.user.is_authenticated:
-            
-            for product_id, attributes in items_data.items():
-                try:
-                    product = Clothing.objects.get(pk=product_id)
-                except Clothing.DoesNotExist:
-                    print(f"Product with id {product_id} does not exist")
-                    continue
-                quantity = attributes.get('quantity',1)
-                color = attributes.get('color')
-                size = attributes.get('size')
-                print(product)
-                items.append({
-                    'product': product,
-                    'quantity': quantity,
-                    'color': color,
-                    'size': size
-                })            
-        else:
-            for product_id, attributes in items_data.items():
-                try:
-                    product = Clothing.objects.get(pk=product_id)
-                except Clothing.DoesNotExist:
-                    print(f"Product with id {product_id} does not exist")
-                    continue
-
-                quantity = attributes.get('quantity',1)
-                color = attributes.get('color')
-                size = attributes.get('size')
-                items.append({
-                    'product': product,
-                    'quantity': quantity,
-                    'color': color,
-                    'size': size
-                })
-        return render(request, 'cart/cart.html', {'cart_items': items})
+        items_data = JSONDECODE(cookie_cart)
+        for key, attributes in items_data.items():
+            product_uid = attributes.get('product')
+            try:
+                product = Clothing.objects.get(pk=product_uid)
+            except Clothing.DoesNotExist:continue
+            items.append({
+                'product': product,
+                'quantity': attributes.get('quantity'),
+                'color': attributes.get('color'),
+                'size': attributes.get('size'),
+                'key':key
+            })
+        return render(request, 'cart/cart.html', {'cart_items': items,})
     return render(request, 'cart/cart.html', {'cart_items': None})
+
 
 
 def delete_from_cart(request, product_id):
     response = redirect('cart:cart')
     if request.user.is_authenticated:
-        get_object_or_404(CartProduct, product=product_id).delete()
-        response.set_cookie('cart', make_cookies(request))
+        get_object_or_404(
+            CartProduct,
+                pk=product_id,
+                ).delete()
+        response.set_cookie('cart', user_cookies(request))
     else:
         cart = JSONDECODE(request.COOKIES.get('cart'))
         cart.pop(product_id)
@@ -67,17 +49,20 @@ def delete_from_cart(request, product_id):
 
 def update_cart_qty(request):
     if request.method == 'POST':
-        quantity = request.POST.get('quantity')
-        product_id = (request.POST.get('product_id'))
         if request.user.is_authenticated:
-            cart_product = get_object_or_404(CartProduct, product=product_id, user=request.user)
-            cart_product.quantity = quantity
-            cart_product.save()
+            cookie_cart = request.COOKIES.get('cart')
+            cookie_cart  = JSONDECODE(cookie_cart)
+            index = request.POST.get('product_id')
+            cart_products = CartProduct.objects.filter(
+                pk=index,
+                user=request.user
+                )
+            cart_products.update(quantity=request.POST.get('quantity'))
             response = JsonResponse({'success': True, 'message': 'Cart quantity updated'})
-            response.set_cookie('cart', make_cookies(request))
+            response.set_cookie('cart', user_cookies(request))
         else:
             cart = JSONDECODE(request.COOKIES.get('cart'))
-            cart[product_id]['quantity']=quantity
+            cart[request.POST.get('product_id')]['quantity']=request.POST.get('quantity')
             cart = JSONENCODE(cart)
             response = JsonResponse({'success': True, 'message': 'Cart quantity updated'})
             response.set_cookie('cart', cart)
@@ -86,33 +71,35 @@ def update_cart_qty(request):
 
 def add_to_cart_ajax(request):
     if request.user.is_authenticated:
-        product = get_object_or_404(Clothing, pk=request.POST.get('product_id'))
-        cart = Cart.objects.get_or_create(user=request.user)
-        cp_created = CartProduct.objects.get_or_create(
-            cart=cart,
-            user=request.user,
-            product=product,
-            color=request.POST.get('color'),
-            size=request.POST.get('size'),
-            defaults={'quantity': 1}
-        )
-        if not cp_created:
-            return JsonResponse({'added': False,'error':'Already added '})
-        response = JsonResponse({'added': True})
-        cart_ = make_cookies(request)
-        response.set_cookie('cart', cart_)
-        return response
+        product_id = request.POST.get('product_id')
+        color = request.POST.get('color')
+        size = request.POST.get('size')
+        cookie_cart = request.COOKIES.get('cart', {})
+        cookie_cart = JSONDECODE(cookie_cart)
+        if product_id in [value['product'] for value in cookie_cart.values() if value['product'] == product_id and value['color'] == color and value['size'] == size]:
+            return JsonResponse({'added': False, 'error': 'Already added'})
+        else:
+            product = get_object_or_404(Clothing, pk=product_id)
+            cart, cart_created = Cart.objects.get_or_create(user=request.user)
+            CartProduct.objects.create(
+                cart=cart,
+                user=request.user,
+                product=product,
+                color=color,
+                size=size,
+                quantity=1
+            )
+            response = JsonResponse({'added': True})
+            cart_ = user_cookies(request)
+            response.set_cookie('cart', cart_)
+            return response
+
     else:
         try:
-            cart = set_guest_cart_cookie(request)
+            cart = guest_cookies(request)
         except Exception as e:
-            return JsonResponse({'added': False,'error':e})
+            return JsonResponse({'added': False, 'error': e})
+
         response = JsonResponse({'success': True})
         response.set_cookie('cart', cart)
         return response
-             
-
-
-
-
- #

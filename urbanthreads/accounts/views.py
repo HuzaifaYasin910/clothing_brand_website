@@ -1,13 +1,10 @@
 from django.contrib.auth.models import User
-from django.db.models import F
 from django.db import IntegrityError
 from django.contrib import messages
 from django.contrib.auth import logout
 from .forms import *
 from .models import *
 from store.models import Clothing
-from cart.utils import helper_cookies,JSONDECODE,JSONENCODE
-from django.http import HttpResponse
 import uuid
 import json
 from django.shortcuts import (
@@ -18,69 +15,23 @@ from django.contrib.auth import (
     authenticate,
     login as auth_login
 )
-from cart.views import make_cookies
+from cart.utils import user_cookies
+from .utils import process_guest_cookies
 
 def login_view(request):
     if request.method == 'POST':
-        user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))    
-        if user :
-            cart = request.COOKIES.get('cart')
-            if cart:
-                try: items_data = json.loads(cart)
-                except Exception as e:return HttpResponse('error in handeling of json data',e)
-                user_cart, created = Cart.objects.get_or_create(user=user)   
-                cart_products = CartProduct.objects.filter(
-                    cart=user_cart,
-                    user=user
-                ).select_related('product')
-                new_cart_products=[]
-                existing_products = {cp.product_id: cp for cp in cart_products}
-                print(existing_products,'existing_products')
-                for product_id, attributes in items_data.items():
-                    
-
-                    existing_cart_product = existing_products.get(product_id)
-
-                    if existing_cart_product:
-                        print(f"Product with id {product_id} already exists")
-                        continue
-                    try:
-                        product = Clothing.objects.get(pk=product_id)
-                    except Clothing.DoesNotExist:
-                        print(f"Product with id {product_id} does not exist")
-                        continue
-                    
-                    quantity = attributes.get('quantity', 1)
-                    color = attributes.get('color')
-                    size = attributes.get('size')
-
-                    new_cart_products.append(
-                        CartProduct(
-                            user=user,
-                            product=product,
-                            quantity=quantity,
-                            color=color,
-                            size=size,
-                            cart=user_cart
-                        )
-                    )
-
-                # Bulk create new products if new_cart_products is not empty
-                if new_cart_products:
-                    CartProduct.objects.bulk_create(new_cart_products)
-
-                auth_login(request, user)
-                response = redirect('accounts:user_profile')
-                response.set_cookie('cart',make_cookies(request))
-                return response
-                            
+        user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
+        if user:
+            auth_login(request, user)
+            response = redirect('accounts:user_profile')
+            cookie_cart = request.COOKIES.get('cart')
+            if cookie_cart:
+                process_guest_cookies(request,cookie_cart,user)
+                response.set_cookie('cart',user_cookies(request))  
+                return response     
             else:
-                print('none cart')
-                auth_login(request, user)
-                response = redirect('accounts:user_profile')
-                response.set_cookie('cart',make_cookies(request))
-                return response   
-            
+                response.set_cookie('cart',user_cookies(request))  
+                return response         
         else:
             messages.error(request, 'Invalid username or password.')
             return redirect('accounts:login')

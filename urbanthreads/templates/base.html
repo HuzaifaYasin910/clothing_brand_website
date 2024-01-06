@@ -66,7 +66,7 @@
                         {% else %}
                         <li class="nav-item"><a class="nav-link mx-3" href="{% url 'accounts:login' %}" >Login</a></li>
                         {% endif %}
-                        <li class="nav-item"><a class="nav-link  mx-3" href="about-us.html" >ABOUT US</a></li>
+                        <li class="nav-item"><a class="nav-link  mx-3" href="{% url 'store:about_us' %}" >ABOUT US</a></li>
                     </ul>
                 </div>
             </div>
@@ -141,7 +141,7 @@
                 <ul class="list-inline">
                     <li class="list-inline-item"><a href="{% url 'store:home' %}" style="color: var(--bs-orange);font-weight: bold;">Home</a></li>
                     <li class="list-inline-item"><a href="{% url 'accounts:login' %}" style="color: var(--bs-cyan);font-weight: bold;">Login</a></li>
-                    <li class="list-inline-item"><a href="#" style="color: var(--bs-yellow);font-weight: bold;">About</a></li>
+                    <li class="list-inline-item"><a href="{% url 'store:about_us' %}" style="color: var(--bs-yellow);font-weight: bold;">About</a></li>
                     <li class="list-inline-item"><a href="#" style="color: var(--bs-gray-100);font-weight: bold;">cookies</a></li>
                 </ul>
                 <p class="copyright"><br><strong>&nbsp;© 2023&nbsp;</strong>URBAN THREADS STORES</p>

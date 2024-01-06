@@ -1,15 +1,25 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse,HttpResponse
 from store.models import *
+import logging
 import json
+from django.shortcuts import( 
+    render,
+    redirect,
+    get_object_or_404
+    )
 from accounts.models import (
     Cart,
     CartProduct
 )
-import logging
-from .utils import user_cookies,guest_cookies,JSONDECODE,JSONENCODE
-from django.db import IntegrityError
+from .utils import (
+    user_cookies,
+    guest_cookies,
+    JSONDECODE,
+    JSONENCODE
+    )
+
 logger = logging.getLogger(__name__)
+
 def view_cart(request):
     cookie_cart = request.COOKIES.get('cart')
     if cookie_cart:
@@ -74,25 +84,25 @@ def add_to_cart_ajax(request):
         product_id = request.POST.get('product_id')
         color = request.POST.get('color')
         size = request.POST.get('size')
-        cookie_cart = request.COOKIES.get('cart', {})
+        cookie_cart = request.COOKIES.get('cart',{})
         cookie_cart = JSONDECODE(cookie_cart)
-        if product_id in [value['product'] for value in cookie_cart.values() if value['product'] == product_id and value['color'] == color and value['size'] == size]:
-            return JsonResponse({'added': False, 'error': 'Already added'})
-        else:
-            product = get_object_or_404(Clothing, pk=product_id)
-            cart, cart_created = Cart.objects.get_or_create(user=request.user)
-            CartProduct.objects.create(
-                cart=cart,
-                user=request.user,
-                product=product,
-                color=color,
-                size=size,
-                quantity=1
-            )
-            response = JsonResponse({'added': True})
-            cart_ = user_cookies(request)
-            response.set_cookie('cart', cart_)
-            return response
+        if cookie_cart:
+            if product_id in [value['product'] for value in cookie_cart.values() if value['product'] == product_id and value['color'] == color and value['size'] == size]:
+                return JsonResponse({'added': False, 'error': 'Already added'})
+        product = get_object_or_404(Clothing, pk=product_id)
+        cart, cart_created = Cart.objects.get_or_create(user=request.user)
+        CartProduct.objects.create(
+            cart=cart,
+            user=request.user,
+            product=product,
+            color=color,
+            size=size,
+            quantity=1
+        )
+        response = JsonResponse({'added': True})
+        cart_ = user_cookies(request)
+        response.set_cookie('cart', cart_)
+        return response
 
     else:
         try:

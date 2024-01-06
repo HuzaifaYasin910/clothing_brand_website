@@ -45,7 +45,7 @@ def create_clothing(request):
         clothing_form = ClothingForm()
         size_formset = ClothingSizeFormSet(prefix='size')
         images_formset = ClothingImagesFormSet(prefix='images')
-        colors_formset = ClothingColorsFormSet(prefix='colors')
+        colors_formset = ClothingColorsFormSet(prefix='colors') 
 
     return render(request, 'admin_local/create.html', {
         'size_formset_count': size_formset.total_form_count,

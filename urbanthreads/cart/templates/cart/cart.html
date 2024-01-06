@@ -1,4 +1,6 @@
-{% extends "base.html"%} {% block content %}
+{% extends "base.html"%} 
+{% block content %}
+{% if cart_items %}
         <section class="clean-cart dark pt-5">
             <div class="container mt-5">
                 <div class="col pt-5">
@@ -10,7 +12,7 @@
                                     <td>PRODUCT</td>
                                     <td>QUANTITY</td>
                                     <td class="text-end">TOTAL</td>
-                                {% if cart_items %}
+                                
                                 
 
                                 {% for item in cart_items %}   
@@ -52,9 +54,7 @@
                                
                                 {% endfor %}
                                
-                                {% else %}
-                                <p>No item in the cart</p>
-                                {% endif%}
+                                
 
                         </table>
                     </div>
@@ -62,14 +62,26 @@
             </div>
             <hr class="hr-min">
         </section>
+        
+        
         <div class="container d-flex-j-end py-5">
             <div class="chkot-m">
                 <h6 class="text-end fw-bold m-0">Subtotal : PKR {{total_price}}</h6><span><br><br><span style="color: rgba(0, 0, 0, 0.75);">Taxes and shipping calculated at checkout</span><br></span>
                 <form><button class="btn btn-primary w-100 btn-p" type="button">CHECK OUT&nbsp;</button></form><a class="btn btn-primary white-btn w-100 mt-2 btn-p" role="button">CONTINUE SHOPPING</a>
             </div>
         </div>
+        {% else %}
+        <section class="d-flex justify-content-center align-items-center clean-cart dark pt-5 mh-50">
+            <div class="container">
+                <h2 class="text-center fw-bold">Your cart is empty</h2>
+                <div class="d-flex d-lg-flex justify-content-center justify-content-lg-center pt-2">
+                    <a class="btn btn-primary btn-p px-4" role="button" href="{% url 'store:home' %}">CONTINUE SHOPPING</a>
+                </div>
+            </div>
+            <hr class="hr-min">
+        </section>
+        {% endif%}
 <script>
-    //
    function updateCartQuantity(quantity, product_id,url) {
     $.ajax({
         url: url,

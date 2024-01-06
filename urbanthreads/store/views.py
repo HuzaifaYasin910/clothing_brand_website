@@ -39,3 +39,6 @@ def product_detail(request , product_id):
 
 def error(request):
     return render(request, 'store/error.html')
+
+def about_us(request):
+    return render(request,'store/about.html')

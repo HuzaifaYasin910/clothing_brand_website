@@ -68,7 +68,6 @@ def user_profile(request):
         return render(request, 'accounts/profile.html', {"is_authenticated": is_authenticated})
     
 
-
     
 def logout_view(request):
     response = redirect('/home',{"is_authenticated":False})

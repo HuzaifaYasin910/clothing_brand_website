@@ -15,7 +15,7 @@
                 <h6 class="text-muted card-subtitle mb-2">{{address.phone}}</h6>
                 <h6 class="text-muted card-subtitle mb-2">{{address.email}}</h6>
                 <p class="card-text">{{address.address}}, {{address.country}}</p>
-                <a class="card-link" href="{% url 'accounts:delete_address' address %}"><i class="icon-trash fs25"></i></a>
+                <a class="card-link" href="{% url 'accounts:delete_address' address.uid %}"><i class="icon-trash fs25"></i></a>
             </div>
         </div>
         {% endfor %}

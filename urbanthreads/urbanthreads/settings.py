@@ -29,7 +29,7 @@ config_data = load_configurations()
 SECRET_KEY = 'django-insecure-)ze^fcouq8w2c7yd#xugcrl4l8=p6*c_fb5knx@^7ghc7_*8mu'
 # False  ,  True
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,18 +38,18 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-     'cart',
-        'whitenoise.runserver_nostatic',
-        'accounts.apps.AccountsConfig',
-        'admin_local.apps.AdminLocalConfig',
-        'store.apps.StoreConfig',
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',    
-        'storages',
+    'cart',
+    'whitenoise.runserver_nostatic',
+    'accounts.apps.AccountsConfig',
+    'admin_local.apps.AdminLocalConfig',
+    'store.apps.StoreConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',    
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -131,10 +131,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
-STATICFILES_DIRS = [
-    BASE_DIR / "statics",
-]
-
 MEDIA_URL  = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

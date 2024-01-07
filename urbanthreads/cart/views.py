@@ -103,7 +103,6 @@ def add_to_cart_ajax(request):
         cart_ = user_cookies(request)
         response.set_cookie('cart', cart_)
         return response
-
     else:
         try:
             cart = guest_cookies(request)

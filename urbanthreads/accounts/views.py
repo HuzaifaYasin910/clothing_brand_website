@@ -1,22 +1,16 @@
+from django.contrib.auth import authenticate, login as auth_login
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .forms import CheckoutForm, AddressForm
 from django.contrib.auth.models import User
+from .utils import process_guest_cookies
+from django.contrib.auth import logout
 from django.db import IntegrityError
 from django.contrib import messages
-from django.contrib.auth import logout
-from .forms import *
-from .models import *
-from store.models import Clothing
-import uuid
-import json
-from django.shortcuts import (
-    render,
-    redirect,
-    get_object_or_404) 
-from django.contrib.auth import (
-    authenticate,
-    login as auth_login
-)
 from cart.utils import user_cookies
-from .utils import process_guest_cookies
+from store.models import Clothing
+from .models import *
+import uuid
 
 def login_view(request):
     if request.method == 'POST':
@@ -36,19 +30,6 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
             return redirect('accounts:login')
     return render(request,'accounts/login.html')
-
-def cookies(request):
-    user_cart_products = CartProduct.objects.filter(user=request.user)
-    cart_data = {}
-    for item in user_cart_products:
-        item_data= {
-        'quantity': item.quantity,
-        'color':item.color,
-        'size': item.size,
-        }
-        cart_data[str(item.product.uid)] = item_data
-    return json.dumps(cart_data)
-
 
 def create_user_account(request):
     if request.method == 'POST':
@@ -71,7 +52,6 @@ def create_user_account(request):
     return render(request, 'accounts/register.html')
 
 def user_profile(request):
-
     if request.user.is_authenticated:
         username = request.user.username
         is_authenticated = True
@@ -124,6 +104,30 @@ def delete_cart_item(request,cart_pk):
     required_object.delete()
     return redirect('accounts:user_profile')
 
+@login_required(login_url='accounts:login')
+def view_addresses(request):
+    addresses = Address.objects.filter(user=request.user)
+    return render(request,'accounts/addresses.html',{'addresses':addresses})
+
+def delete_address(request,address_pk):
+    try:
+        get_object_or_404(Address,pk=address_pk).delete()
+    except Exception as e:
+        messages.error(request,f'Error deleting address {e}')
+    return redirect('accounts:view_addresses')
+
+@login_required(login_url='accounts:login')
 def add_address(request):
-    return render(request,'accounts/add-address.html')
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user  # Assuming the user is authenticated
+            address.save()
+            messages.success(request, 'Address added')
+            return redirect('accounts:view_addresses')  # Redirect to a success page after saving
+    else:
+        form = AddressForm()
+    return render(request, 'accounts/add-address.html', {'form': form})
+
 

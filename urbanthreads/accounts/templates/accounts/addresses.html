@@ -1,0 +1,28 @@
+{% extends "base.html"%} 
+{% block content %} 
+<section class="d-flex justify-content-center align-items-center clean-cart dark pt-5 ">
+    <div class="container mt-5">
+        {% if messages %} {% for message in messages %}
+            <div class="alert alert-info mt-4">{{ message }}</div>
+        {% endfor %} {% endif %}
+        <h2 class="text-center fw-bold">Your addresses</h2>
+        {% for address in addresses %}
+        <div class="card">
+            <div class="card-body border-top">
+                <h4 class="card-title">{{address.first_name}} {{address.last_name}}</h4>
+                <h6 class="text-muted card-subtitle mb-2">{{address.city}}</h6>
+                <h6 class="text-muted card-subtitle mb-2">{{address.zip_code}}</h6>
+                <h6 class="text-muted card-subtitle mb-2">{{address.phone}}</h6>
+                <h6 class="text-muted card-subtitle mb-2">{{address.email}}</h6>
+                <p class="card-text">{{address.address}}, {{address.country}}</p>
+                <a class="card-link" href="{% url 'accounts:delete_address' address %}"><i class="icon-trash fs25"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="d-flex d-lg-flex justify-content-center justify-content-lg-center pt-2 mb-5">
+            <a class="btn btn-primary btn-p px-4" role="button" href="{% url 'accounts:add_address' %}">ADD ADDRESS</a>
+        </div>
+    </div>
+    <hr class="hr-min">
+</section>
+{% endblock %}

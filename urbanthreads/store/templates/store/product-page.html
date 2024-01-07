@@ -26,7 +26,8 @@
                 {% csrf_token %}
                 <div class="d-inline-flex w-100">
                 <p class="size-symbol w-25">
-                    <strong>COLORS</strong><br></p>
+                    <strong>COLORS</strong><br>
+                </p>
                     <!--######### COLOR #########-->
                     {% for color in product.clothing_color.all %}
                     <label class="form-label color-p-circle cpointer" for="{{color}}" style="background-color:{{color}};"></label>
@@ -38,10 +39,19 @@
                 <div class="d-inline-flex w-100">
                     <h6 class="w-25 size-symbol">SIZE</h6>
                     <!--######### SIZE #########-->
-                    {% for size in product.clothing_size.all %}
-                    <label class="form-label size-symbol mx-1 cpointer" for="{{size}}">{{size}}</label>
-                    <input type="radio" id="{{size}}" value="{{size}}" name="size" hidden>
+                    {% for size in product.clothing_size.all %} 
+                    {% if size.quantity == 0 %}
+                    <label class="form-label size-symbol mx-1 text-secondary text-decoration-line-through">
+                        {{ size.size }}
+                    </label>
+                    {%else%}
+                    <label class="form-label size-symbol mx-1 cpointer" for="{{ size.size }}">
+                    {{ size.size }}
+                    </label>
+                    <input type="radio" id="{{ size.size }}" value="{{ size.size }}" name="size" hidden>
+                    {% endif %}
                     {% endfor %}
+
                 </div>
                 <div class="d-inline-flex w-100">
                     <h6 class="w-25 size-symbol">GENDER</h6>

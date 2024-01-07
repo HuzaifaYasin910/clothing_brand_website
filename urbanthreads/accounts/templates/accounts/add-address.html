@@ -1,22 +1,11 @@
 {% extends "base.html"%} {% block content %} 
     <section class="clean-block clean-form dark h-auto pt-5">
         <div class="container pt-5">
-            <form>
+            <form method="post">
+                {% csrf_token %}
                 <h3 class="fw-bold">Add a new address</h3>
-                <input class="form-control my-4" type="text" id="f_name" name="name" placeholder="First Name">
-                <input class="form-control my-4" type="text" id="l_name" name="name" placeholder="Last Name">
-                <input class="form-control my-4" type="text" id="l_name-3" name="name" placeholder="Address 1">
-                <input class="form-control my-4" type="text" id="l_name-4" name="name" placeholder="City">
-                <select class="form-select my-3">
-                    <optgroup label="This is a group">
-                        <option value="12" selected="">This is item 1</option>
-                        <option value="13">This is item 2</option>
-                        <option value="14">This is item 3</option>
-                    </optgroup>
-                </select><input class="form-control my-4" type="text" id="l_name-2" name="name" placeholder="Postal/ZIP Code">
-                <input class="form-control my-4" type="tel" placeholder="Phone">
-                <input class="form-control my-4" type="email" id="email" name="email" placeholder="Email">
-                <a class="btn btn-primary mt-2 px-4" role="button" href="#">Add Address</a>
+                {{form}}
+                <button class="btn btn-primary mt-2 px-4" type="submit">Add Address</button>
                 <a class="btn btn-primary mt-2 px-4 btn-blank" role="button" href="#">Go Back</a>
             </form>
         </div>
